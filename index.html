@@ -65,6 +65,11 @@
   .f1 { top: 14%; inset-inline-start: -64px; } .f2 { bottom: 16%; inset-inline-end: -58px; animation-delay: -2.5s; }
   @keyframes bob { 50% { transform: translateY(-10px); } }
 
+  /* headings = images rendered in Thmanyah (test/fontgen; the font file itself is never published) */
+  img.ttl { display: inline-block; max-width: 100%; height: auto; vertical-align: middle; }
+  h1 img.ttl { margin-inline-start: -14px; }
+  .head h2, .final h2 { line-height: 0; margin: 10px 0 14px; }
+  @media (max-width: 900px) { h1 img.ttl { margin-inline-start: 0; } }
   section { padding: 64px 0; }
   .head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
   .head small { color: var(--acc2); font-weight: 700; letter-spacing: .5px; }
@@ -204,7 +209,7 @@
   <div class="wrap">
     <div class="text">
       <span class="pill"><i></i> إضافة لـ Adobe Premiere Pro</span>
-      <h1>ريتاتش <em>متل كاب كات</em><br>جوّا بريمير، لكل الوجوه</h1>
+      <h1><img class="ttl" src="img/t/h1.png" width="624" height="192" alt="ريتاتش متل كاب كات جوّا بريمير، لكل الوجوه"></h1>
       <p class="lead">تنعيم بشرة، شيل حبوب وهالات، نحت وجه، ومكياج بلوكات جاهزة… على كل وجه بالفيديو، حتى لو كان جانبي. بكبسة وحدة، مباشرة على التايملاين، بلا تصدير ولا انتظار.</p>
       <div class="cta">
         <a class="btn primary" data-buy href="#price">✨ اشتري الآن</a>
@@ -227,7 +232,7 @@
 
 <section id="features">
   <div class="wrap">
-    <div class="head reveal"><small>كل شي بمكان واحد</small><h2>كل اللي بتعملو بكاب كات… صار ببريمير</h2><p>تحكّم كامل بكل تفصيلة، وكل تعديل بيبيّن فوراً على المعاينة.</p></div>
+    <div class="head reveal"><small>كل شي بمكان واحد</small><h2><img class="ttl" src="img/t/feat.png" width="480" height="126" alt="كل اللي بتعملو بكاب كات… صار ببريمير"></h2><p>تحكّم كامل بكل تفصيلة، وكل تعديل بيبيّن فوراً على المعاينة.</p></div>
     <div class="grid">
       <div class="feat reveal"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3c3 3.5 6 6.6 6 10a6 6 0 0 1-12 0c0-3.4 3-6.5 6-10z"/><path d="M9.5 14a2.5 2.5 0 0 0 2.5 2.5"/></svg></div><h3>بشرة نضيفة</h3><p>تنعيم بيحافظ على ملمس البشرة الطبيعي، شيل الحبوب والبقع، التجاعيد، خطوط الضحكة، وتوحيد اللون.</p></div>
       <div class="feat reveal"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3c4 0 7 3 7 7.5 0 4.8-3.5 10.5-7 10.5S5 15.3 5 10.5C5 6 8 3 12 3z"/><path d="M9.5 10h.01M14.5 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"/></svg></div><h3>شكل الوجه</h3><p>تصغير وتنحيف، وجه V، الفك وعظام الخد، الدقن والجبهة، وشد الوجه، كلو بسلايدرات بسيطة.</p></div>
@@ -241,7 +246,7 @@
 
 <section id="before-after">
   <div class="wrap">
-    <div class="head reveal"><small>شوف الفرق</small><h2>قبل وبعد، بكبسة وحدة</h2><p>صور حقيقية مرّت على Retouch Beauty جوّا بريمير: تنعيم، شيل حبوب، تفتيح عيون، نحت خفيف ومكياج ناعم، بلا أي فوتوشوب. اسحب الخط لتقارن.</p></div>
+    <div class="head reveal"><small>شوف الفرق</small><h2><img class="ttl" src="img/t/ba.png" width="424" height="71" alt="قبل وبعد، بكبسة وحدة"></h2><p>صور حقيقية مرّت على Retouch Beauty جوّا بريمير: تنعيم، شيل حبوب، تفتيح عيون، نحت خفيف ومكياج ناعم، بلا أي فوتوشوب. اسحب الخط لتقارن.</p></div>
     <div class="bawrap reveal">
       <div class="ba" id="ba">
         <!-- pairs: img/ba/<n>-before.jpg + <n>-after.jpg, 880x1100 (frames exported from Premiere with the effect on/off) -->
@@ -262,14 +267,14 @@
 
 <section id="looks">
   <div class="wrap">
-    <div class="head reveal"><small>مكياج بكبسة</small><h2>13 لوك جاهز</h2><p>اختار اللوك وعدّل قوته من سلايدر واحد، أو ركّب لوكك من الصفر.</p></div>
+    <div class="head reveal"><small>مكياج بكبسة</small><h2><img class="ttl" src="img/t/looks.png" width="240" height="71" alt="13 لوك جاهز"></h2><p>اختار اللوك وعدّل قوته من سلايدر واحد، أو ركّب لوكك من الصفر.</p></div>
     <div class="looks reveal" id="lookGrid"></div>
   </div>
 </section>
 
 <section id="how">
   <div class="wrap">
-    <div class="head reveal"><small>سهلة كتير</small><h2>من الشراء للريتاتش بدقايق</h2></div>
+    <div class="head reveal"><small>سهلة كتير</small><h2><img class="ttl" src="img/t/how.png" width="475" height="71" alt="من الشراء للريتاتش بدقايق"></h2></div>
     <div class="steps">
       <div class="step reveal"><h3>نزّل وثبّت</h3><p>نزّل ملف التثبيت وشغّله. بيركّب الإضافة ببريمير لحالو.</p></div>
       <div class="step reveal"><h3>ابعتلنا رقم جهازك</h3><p>افتح Window ← Extensions ← Retouch Beauty، انسخ رقم الجهاز وابعتلنا ياه على واتساب.</p></div>
@@ -318,7 +323,7 @@
 
 <section id="faq">
   <div class="wrap">
-    <div class="head reveal"><small>عندك سؤال؟</small><h2>أسئلة متكررة</h2></div>
+    <div class="head reveal"><small>عندك سؤال؟</small><h2><img class="ttl" src="img/t/faq.png" width="245" height="71" alt="أسئلة متكررة"></h2></div>
     <div class="faq">
       <details class="reveal"><summary>بتشتغل على بريمير تبعي؟</summary><p>إذا عندك Adobe Premiere Pro 2022 أو أحدث على ويندوز 10 أو 11، إي. نسخة الماك قريباً.</p></details>
       <details class="reveal"><summary>بدها نت لتشتغل؟</summary><p>لا. كل الشغل بيصير على جهازك، وما في ولا صورة من الفيديو بتطلع لبرّا. النت بس للتحديثات.</p></details>
@@ -333,7 +338,7 @@
 <section>
   <div class="wrap">
     <div class="final reveal">
-      <h2>جاهز تخلّي شغلك يلمع؟ ✨</h2>
+      <h2><img class="ttl" src="img/t/final.png" width="435" height="71" alt="جاهز تخلّي شغلك يلمع؟"></h2>
       <p>ريتاتش احترافي لكل وجه، بكبسة وحدة، جوّا بريمير.</p>
       <div class="cta"><a class="btn primary" data-buy href="#">اشتري الآن</a><a class="btn" data-dl href="#">تنزيل للويندوز</a></div>
     </div>
