@@ -81,7 +81,18 @@
   .feat p { margin: 0; color: var(--muted); font-size: 15px; }
 
   /* before / after */
-  .ba { position: relative; max-width: 880px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; border: 1px solid #3f2a6e; box-shadow: var(--glow), 0 30px 80px rgba(0,0,0,.5); user-select: none; touch-action: none; background: #0b0716; direction: ltr; }
+  .bawrap { display: grid; grid-template-columns: minmax(0, 440px) 220px; gap: 18px; justify-content: center; align-items: center; }
+  .bathumbs { display: grid; gap: 10px; }
+  .bathumbs button { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 16px; border: 1px solid var(--line); background: var(--glass); color: var(--text); font: inherit; text-align: start; cursor: pointer; transition: .2s; }
+  .bathumbs button:hover { border-color: #6d45c4; }
+  .bathumbs button.on { border-color: var(--acc); box-shadow: var(--glow); background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(26,14,48,.8)); }
+  .bathumbs img { width: 58px; height: 72px; object-fit: cover; border-radius: 10px; flex: 0 0 58px; }
+  .bathumbs span { font-weight: 700; font-size: 14.5px; line-height: 1.4; }
+  .bathumbs small { color: var(--muted); font-weight: 400; font-size: 12.5px; }
+  .credit { text-align: center; color: var(--muted); font-size: 12.5px; margin: 14px 0 0; }
+  .credit a { text-decoration: underline; }
+  @media (max-width: 760px) { .bawrap { grid-template-columns: 1fr; } .bathumbs { grid-template-columns: repeat(3, 1fr); } .bathumbs button { flex-direction: column; text-align: center; gap: 6px; } .bathumbs img { width: 100%; height: auto; aspect-ratio: 4/5; } .bathumbs span { font-size: 13px; } }
+  .ba { position: relative; width: 100%; margin: 0 auto; aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden; border: 1px solid #3f2a6e; box-shadow: var(--glow), 0 30px 80px rgba(0,0,0,.5); user-select: none; touch-action: none; background: #0b0716; direction: ltr; }
   .ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .ba .before { position: absolute; inset: 0; clip-path: inset(0 50% 0 0); }
   .ba .bar { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 14px rgba(192,132,252,.9); }
@@ -230,14 +241,22 @@
 
 <section id="before-after">
   <div class="wrap">
-    <div class="head reveal"><small>شوف الفرق</small><h2>قبل وبعد</h2><p>اسحب الخط لتقارن.</p></div>
-    <div class="ba reveal" id="ba">
-      <!-- put your own frames here: img/after.jpg (with the retouch) + img/before.jpg (without), same size, 16:9 -->
-      <img src="img/after.jpg" alt="بعد الريتاتش" onerror="this.closest('.ba').classList.add('noimg')">
-      <div class="before"><img src="img/before.jpg" alt="قبل الريتاتش" onerror="this.closest('.ba').classList.add('noimg')"></div>
-      <span class="tag tl">قبل</span><span class="tag tr">بعد</span>
-      <div class="bar"></div><div class="knob"><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></div>
+    <div class="head reveal"><small>شوف الفرق</small><h2>قبل وبعد، بكبسة وحدة</h2><p>صور حقيقية مرّت على Retouch Beauty جوّا بريمير، بلا أي تعديل تاني. اسحب الخط لتقارن.</p></div>
+    <div class="bawrap reveal">
+      <div class="ba" id="ba">
+        <!-- pairs: img/ba/<n>-before.jpg + <n>-after.jpg, 880x1100 (frames exported from Premiere with the effect on/off) -->
+        <img id="baAfter" src="img/ba/1-after.jpg" alt="بعد الريتاتش" width="880" height="1100">
+        <div class="before"><img id="baBefore" src="img/ba/1-before.jpg" alt="قبل الريتاتش" width="880" height="1100"></div>
+        <span class="tag tl">قبل</span><span class="tag tr">بعد</span>
+        <div class="bar"></div><div class="knob"><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></div>
+      </div>
+      <div class="bathumbs" id="baThumbs">
+        <button class="on" data-n="1"><img src="img/ba/1-after.jpg" alt=""><span>حبوب وآثار<br><small>وجه بزاوية</small></span></button>
+        <button data-n="2" data-x=".32"><img src="img/ba/2-after.jpg" alt=""><span>وجه جانبي<br><small>بيلقطه بالكامل</small></span></button>
+        <button data-n="3"><img src="img/ba/3-after.jpg" alt=""><span>حب شباب قوي<br><small>جبهة وخدود</small></span></button>
+      </div>
     </div>
+    <p class="credit">الصور من <a href="https://www.pexels.com" target="_blank" rel="noopener">Pexels</a></p>
   </div>
 </section>
 
@@ -359,16 +378,29 @@
 
     // before / after slider
     var ba = document.getElementById('ba'), before = ba.querySelector('.before'), bar = ba.querySelector('.bar'), knob = ba.querySelector('.knob'), drag = false;
-    function set(x) { var r = ba.getBoundingClientRect(), f = Math.max(0, Math.min(1, (x - r.left) / r.width)); before.style.clipPath = 'inset(0 ' + (100 - f * 100) + '% 0 0)'; bar.style.left = knob.style.left = f * 100 + '%'; }
+    function setF(f) { f = Math.max(0, Math.min(1, f)); before.style.clipPath = 'inset(0 ' + (100 - f * 100) + '% 0 0)'; bar.style.left = knob.style.left = f * 100 + '%'; }
+    function set(x) { var r = ba.getBoundingClientRect(); setF((x - r.left) / r.width); }
+    var base = .5;
     ba.addEventListener('pointerdown', function (e) { drag = true; ba.setPointerCapture(e.pointerId); set(e.clientX); });
     ba.addEventListener('pointermove', function (e) { if (drag) set(e.clientX); });
     ba.addEventListener('pointerup', function () { drag = false; });
-    // no frames yet -> a tidy placeholder instead of broken images
-    var obs = new MutationObserver(function () {
-      if (ba.classList.contains('noimg') && !ba.querySelector('.empty')) { ba.innerHTML = '<div class="empty">صور قبل وبعد رح تنضاف هون قريباً ✨</div>'; }
+    // pick a pair
+    document.querySelectorAll('#baThumbs button').forEach(function (b) {
+      b.onclick = function () {
+        var n = b.getAttribute('data-n');
+        document.getElementById('baAfter').src = 'img/ba/' + n + '-after.jpg';
+        document.getElementById('baBefore').src = 'img/ba/' + n + '-before.jpg';
+        document.querySelectorAll('#baThumbs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        base = +(b.getAttribute('data-x') || .5); setF(base);
+      };
     });
-    obs.observe(ba, { attributes: true, attributeFilter: ['class'] });
-    if (ba.classList.contains('noimg')) ba.innerHTML = '<div class="empty">صور قبل وبعد رح تنضاف هون قريباً ✨</div>';
+    // a short hint: the line glides once when the section comes into view
+    var hinted = false;
+    if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) new IntersectionObserver(function (es, o) {
+      if (!es[0].isIntersecting || hinted) return; hinted = true; o.disconnect();
+      var t0 = performance.now();
+      (function step(t) { var k = Math.min(1, (t - t0) / 1600); setF(base + .25 * Math.sin(k * Math.PI * 2) * (1 - k)); if (k < 1 && !drag) requestAnimationFrame(step); })(t0);
+    }, { threshold: .6 }).observe(ba);
 
     // reveal on scroll
     var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: .12 }) : null;
