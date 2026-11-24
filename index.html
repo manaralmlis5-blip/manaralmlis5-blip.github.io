@@ -11,7 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23000'/%3E%3Cpath fill='%237EF2B9' d='M12 4l1.8 5.2 5.2 1.4-5.2 1.8L12 17.6l-1.8-5.2L5 10.6l5.2-1.4z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* look = boim.studio: pure black, white text at opacity steps, ONE mint accent + mint glow, glass islands.
      Headings = images rendered in Thmanyah (test/fontgen; the font files are never published: Thmanyah licence). */
@@ -23,7 +23,7 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; background: var(--bg); }
-  body { margin: 0; color: var(--t); font: 16px/1.75 "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif; overflow-x: hidden; background: var(--bg); }
+  body { margin: 0; color: var(--t); font: 300 16px/1.8 "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif; overflow-x: hidden; background: var(--bg); }
   body::before { content: ''; position: fixed; inset: -20vh -10vw auto; height: 70vh; z-index: -1; pointer-events: none;
     background: radial-gradient(50% 60% at 50% 0%, rgba(126,242,185,.22), rgba(126,242,185,.06) 45%, transparent 75%); transition: opacity .8s; }
   a { color: inherit; text-decoration: none; }
@@ -176,6 +176,12 @@
   .tile span { position: absolute; inset-inline-start: 10px; bottom: 10px; padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; background: rgba(0,0,0,.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--line); }
   .tile:hover { border-color: rgba(126,242,185,.5); translate: 0 -3px; box-shadow: 0 0 30px rgba(126,242,185,.15); }
   .tile.big { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+  .tile.off { display: none; }
+  .tile { animation: pin .6s var(--ease) both; }
+  .chips { position: relative; display: flex; width: max-content; max-width: 100%; overflow-x: auto; margin: 0 auto 22px; padding: 4px; border-radius: 99px; background: var(--s1); border: 1px solid var(--line); scrollbar-width: none; }
+  .chips button { position: relative; z-index: 1; border: 0; background: none; color: var(--t55); font: 500 14px/1 inherit; font-family: inherit; padding: 10px 16px; border-radius: 99px; cursor: pointer; white-space: nowrap; transition: color .25s; }
+  .chips button:hover, .chips button.on { color: #fff; }
+  .chips .cpill { position: absolute; top: 4px; bottom: 4px; left: 0; width: 0; border-radius: 99px; background: rgba(126,242,185,.14); border: 1px solid rgba(126,242,185,.45); box-shadow: 0 0 16px rgba(126,242,185,.25); transition: left .5s var(--spring), width .5s var(--spring); }
 
   /* steps */
   .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; counter-reset: s; }
@@ -276,15 +282,15 @@
   }
 </style>
 </head>
-<body data-p="rb">
+<body data-p="sm">
 
 <header class="top">
   <div class="island glass" id="island">
     <span class="glide" id="glide"></span><span class="dot" id="dot"></span>
     <div class="switch" id="switch">
       <span class="pill" id="swPill"></span>
-      <button class="tab" data-to="rb">Retouch Beauty</button>
       <button class="tab" data-to="sm">Swift Motion</button>
+      <button class="tab" data-to="rb">Retouch Beauty</button>
     </div>
     <span class="sep"></span>
     <div class="links" id="links"></div>
@@ -475,6 +481,9 @@
 <section id="sm-gallery">
   <div class="wrap">
     <div class="head rv"><small>مرّر الماوس فوق أي وحدة</small><h2><img class="ttl" src="img/t/smgal.png" width="316" height="71" alt="شوف شو بيعمل"></h2><p>كل هالحركات طالعة من البلجن نفسه، على نصّك وألوانك.</p></div>
+    <div class="chips rv" id="chips"><span class="cpill"></span>
+      <button class="on" data-k="all">الكل</button><button data-k="tx">نصوص</button><button data-k="gl">زجاج</button><button data-k="tr">انتقالات</button><button data-k="sh">أشكال وكروت</button>
+    </div>
     <div class="gal" id="gal"></div>
   </div>
 </section>
@@ -505,12 +514,24 @@
   </div>
 </section>
 
-<section style="padding-top:0">
+<section id="sm-price">
   <div class="wrap two">
+    <div class="price rv">
+      <span class="tag" id="smPriceTag">ترخيص مدى الحياة</span>
+      <div class="amt" id="smPriceAmt"></div>
+      <div style="color:var(--t55)">دفعة وحدة، بلا اشتراك شهري</div>
+      <ul>
+        <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> أكتر من 35 حركة وإفكت بـ 7 أقسام</li>
+        <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> كل حركة بتتعدّل لايف من اللوحة</li>
+        <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> الحركات والتحديثات الجاية مجاناً</li>
+        <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> دعم مباشر على واتساب</li>
+        <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> المفتاح لجهاز واحد</li>
+      </ul>
+      <a class="btn mint" data-buy href="#"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg> اشتري على واتساب</a>
+    </div>
     <div class="plat">
       <div class="pc rv"><div class="os"><svg viewBox="0 0 24 24"><path d="M3 5.5l7.5-1v7H3zM11.5 4.3L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg></div><div><h3>ويندوز 10 و 11</h3><p>After Effects 2024 وأحدث</p></div><span class="st ok">متوفر</span></div>
       <div class="pc rv d1"><div class="os"><svg viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.5 1.3-.1 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.5 1-1.4 1.3-2.7 1.4-2.8-.1 0-2.6-1-2.6-4.1zM13.9 4.9c.7-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z"/></svg></div><div><h3>ماك</h3><p>قريباً</p></div><span class="st soon">قريباً</span></div>
-    </div>
     <div class="warn rv d1">
       <div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M12 8v4M12 16h.01"/></svg></div>
       <div>
@@ -518,6 +539,7 @@
         <p>إذا طلعت «Windows protected your PC» اكبس <b>More info</b> وبعدين <b>Run anyway</b>.</p>
         <p class="muted">سكّر أفتر إفكتس قبل التثبيت، وبعده افتحه ورح لـ <code>Window › Extensions › Swift Motion</code></p>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -551,8 +573,8 @@
   <div class="wrap">
     <div class="head rv"><small>الأدوات</small><h2><img class="ttl" src="img/t/hub.png" width="462" height="108" alt="أدوات للمبدعين"></h2></div>
     <div class="tools">
-      <button class="card tool rv" data-to="rb"><span class="lg"><svg class="i" viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7z"/></svg></span><span><h3>Retouch Beauty</h3><small>ريتاتش ومكياج لكل الوجوه · Premiere Pro</small></span><span class="go">←</span></button>
-      <button class="card tool rv d1" data-to="sm"><span class="lg"><svg class="i" viewBox="0 0 24 24"><path d="M5 18c4-1 6-4 7-8s3-6 7-6"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="4" r="2"/></svg></span><span><h3>Swift Motion</h3><small>موشن احترافي بكبسة · After Effects</small></span><span class="go">←</span></button>
+      <button class="card tool rv" data-to="sm"><span class="lg"><svg class="i" viewBox="0 0 24 24"><path d="M5 18c4-1 6-4 7-8s3-6 7-6"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="4" r="2"/></svg></span><span><h3>Swift Motion</h3><small>موشن احترافي بكبسة · After Effects</small></span><span class="go">←</span></button>
+      <button class="card tool rv d1" data-to="rb"><span class="lg"><svg class="i" viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7z"/></svg></span><span><h3>Retouch Beauty</h3><small>ريتاتش ومكياج لكل الوجوه · Premiere Pro</small></span><span class="go">←</span></button>
     </div>
   </div>
 </section>
@@ -572,6 +594,9 @@
     whatsapp: '963952651066',        // your WhatsApp, country code, digits only
     price: '$25',                    // Retouch Beauty price card
     oldPrice: '$50',                 // struck through next to it; '' = none
+    smPrice: '$25',                  // Swift Motion price card
+    smOldPrice: '$50',
+
     rbRepo: 'manaralmlis5-blip/manaralmlis5-blip.github.io',   // Retouch Beauty installer releases
     smRepo: 'manaralmlis5-blip/swift-motion'                    // Swift Motion installer releases (Motion Sahib\scripts\publish-update.ps1)
   };
@@ -584,7 +609,7 @@
             links: [['rb-features', 'المميزات'], ['rb-looks', 'اللوكات'], ['rb-how', 'كيف بتشتغل'], ['rb-price', 'السعر'], ['rb-faq', 'أسئلة']],
             marq: ['تنعيم البشرة', 'شيل الحبوب', 'الهالات', 'وجه V', 'تكبير العيون', 'أحمر شفايف', 'كونتور', '13 لوك', 'كل الوجوه'] },
       sm: { msg: 'مرحبا، بدي تفاصيل Swift Motion 🎬', title: 'Swift Motion — موشن احترافي بكبسة جوّا أفتر إفكتس',
-            links: [['sm-gallery', 'الحركات'], ['sm-features', 'المميزات'], ['sm-how', 'كيف بتشتغل'], ['sm-faq', 'أسئلة']],
+            links: [['sm-gallery', 'الحركات'], ['sm-features', 'المميزات'], ['sm-how', 'كيف بتشتغل'], ['sm-price', 'السعر'], ['sm-faq', 'أسئلة']],
             marq: ['نصوص متحركة', 'زجاج', 'لوحات متوهّجة', 'انتقالات بلا قطع', 'حركات ساس', 'كرت متوهّج', 'نص حراري', 'تحديد آيفون', 'تعديل لايف'] }
     };
     var cur = null;
@@ -596,10 +621,14 @@
       var rb = a.getAttribute('data-dl') === 'rb';
       a.href = 'https://github.com/' + (rb ? CONFIG.rbRepo : CONFIG.smRepo) + '/releases/latest/download/' + (rb ? 'RetouchBeauty-Setup.exe' : 'SwiftMotion-Setup.exe');
     });
-    var pm = CONFIG.price.match(/^(\D*)([\d.,]+)(.*)$/);
-    $('priceAmt').innerHTML = (pm ? '<small>' + pm[1] + '</small>' + pm[2] + '<small>' + pm[3] + '</small>' : CONFIG.price) +
-      (CONFIG.oldPrice ? ' <s class="old">' + CONFIG.oldPrice + '</s><span class="off">-' + Math.round(100 - 100 * parseFloat(CONFIG.price.replace(/[^\d.]/g, '')) / parseFloat(CONFIG.oldPrice.replace(/[^\d.]/g, ''))) + '%</span>' : '');
-    if (CONFIG.oldPrice) $('priceTag').innerHTML = '<i></i> عرض الإطلاق، لفترة محدودة';
+    function priceCard(amt, tag, price, old) {
+      var pm = price.match(/^(\D*)([\d.,]+)(.*)$/);
+      $(amt).innerHTML = (pm ? '<small>' + pm[1] + '</small>' + pm[2] + '<small>' + pm[3] + '</small>' : price) +
+        (old ? ' <s class="old">' + old + '</s><span class="off">-' + Math.round(100 - 100 * parseFloat(price.replace(/[^\d.]/g, '')) / parseFloat(old.replace(/[^\d.]/g, ''))) + '%</span>' : '');
+      if (old) $(tag).innerHTML = '<i></i> عرض الإطلاق، لفترة محدودة';
+    }
+    priceCard('priceAmt', 'priceTag', CONFIG.price, CONFIG.oldPrice);
+    priceCard('smPriceAmt', 'smPriceTag', CONFIG.smPrice, CONFIG.smOldPrice);
     $('yr').textContent = new Date().getFullYear();
 
     // looks
@@ -607,8 +636,25 @@
     $('lookGrid').innerHTML = LOOKS.map(function (l) { return '<div class="lk"><img src="img/looks/' + l[0] + '.jpg" alt="لوك ' + l[1] + '" loading="lazy">' + l[1] + '</div>'; }).join('');
 
     // Swift Motion gallery (hover / in view plays)
-    var GAL = [['product','💎 عرض منتجات',1],['orbit','🪐 دويرة'],['pills','🟤 حبوب بتنط'],['heat','🌡 نص حراري'],['glassdots','🔘 نقاط زجاج'],['cards','🎙 كرتين: مقدّم وضيف',1],['chrome','🪩 نص كروم'],['glowtext','🔥 نص متوهّج'],['glasstext','🔮 نص غلاس'],['jazira','🏝 نص جزيرة'],['inbox','💬 صندوق نص'],['twirl','🌀 تدرّج ملتف'],['cta','⌨ نصوص ساس'],['iphone','📱 تحديد آيفون']];
-    $('gal').innerHTML = GAL.map(function (g, i) { return '<div class="tile rv d' + (i % 4) + (g[2] ? ' big' : '') + '"><video src="img/sm/' + g[0] + '.mp4" muted loop playsinline preload="metadata"></video><span>' + g[1] + '</span></div>'; }).join('');
+    // [clip, label, kind, big]; kinds = the panel's sections
+    var GAL = [['product','💎 عرض منتجات','sh',1],['fog','🌫 نص ضبابي','tx'],['chromeblue','🪩 نص كروم','tx'],['glowpanel','🔆 لوحة متوهّجة','gl'],['orbit','🪐 دويرة','sh'],
+      ['split','◫ صندوقين','tr'],['skew','◩ صندوقين مائل','tr'],['cards','🎙 كرتين: مقدّم وضيف','tr',1],['glassbox','🔲 صندوق زجاجي ضبابي','gl'],['site','🌐 كرت موقع زجاجي','gl'],
+      ['fogfire','🔥 نص متوهّج','tx'],['ribbon','🎀 نص شريط','tx'],['pills','🟤 حبوب بتنط','sh'],['heat','🌡 نص حراري','sh'],['glassdots','🔘 نقاط زجاج','gl'],['window','🪟 شاشة عايمة','sh'],
+      ['obj3d','🧊 مجسّم 3D','sh'],['glowcard','🪪 كرت متوهّج','sh'],['chrome','🪩 كروم ذهبي','tx'],['glowtext','🔥 توهّج ناعم','tx'],['glasstext','🔮 نص غلاس','tx'],['jazira','🏝 نص جزيرة','tx'],
+      ['liquid','🌫 نص انسيابي','tx'],['pathtext','〰 نص على مسار','tx'],['ease','✨ حركة انسيابية','tx'],['iphone','📱 تحديد آيفون','tx'],['newbox','💬 صندوق نص جديد','gl'],['inbox','📥 إشعار','sh'],
+      ['namebar','🎟 شريط تعريف','sh'],['linebar','➖ شريط بخط','sh'],['msg','💬 بطاقة رسالة','sh'],['hook','🟩 هوك بادج','sh'],['pixel','🟧 كشف بكسل','sh'],['twirl','🌀 تدرّج ملتف','sh']];
+    $('gal').innerHTML = GAL.map(function (g, i) { return '<div class="tile rv d' + (i % 4) + (g[3] ? ' big' : '') + '" data-k="' + g[2] + '"><video src="img/sm/' + g[0] + '.mp4" muted loop playsinline preload="metadata"></video><span>' + g[1] + '</span></div>'; }).join('');
+    // filter chips: the mint pill glides to the picked kind, tiles blur out / in
+    var chips = $('chips'), cpill = chips.querySelector('.cpill');
+    function chip(b) {
+      chips.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      var s = chips.getBoundingClientRect(), r = b.getBoundingClientRect(); cpill.style.left = (r.left - s.left) + 'px'; cpill.style.width = r.width + 'px';
+      var k = b.getAttribute('data-k');
+      document.querySelectorAll('.tile').forEach(function (t) { var on = k === 'all' || t.getAttribute('data-k') === k; t.classList.toggle('off', !on); });
+    }
+    chips.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) chip(b); });
+    function chipSync() { var b = chips.querySelector('button.on'); if (b && chips.offsetWidth) chip(b); }
+    window.addEventListener('resize', chipSync);
     var touch = matchMedia('(hover: none)').matches;
     document.querySelectorAll('.tile').forEach(function (t) {
       var v = t.querySelector('video');
@@ -667,7 +713,7 @@
       var mq = nu.querySelector('.marq .run'); if (mq && !mq.children.length) { var h = P[p].marq.map(function (w) { return '<span>' + w + '</span>'; }).join(''); mq.innerHTML = h + h; }
       function enter() {
         if (old) { old.classList.remove('out', 'on'); old.querySelectorAll('.rv').forEach(function (el) { el.classList.remove('in'); }); }
-        nu.classList.add('on'); watch(nu); counters(nu);
+        nu.classList.add('on'); watch(nu); counters(nu); if (p === 'sm') setTimeout(chipSync, 30);
         nu.querySelectorAll('.stack video').forEach(function (v) { v.play().catch(function () {}); });
         if (old) old.querySelectorAll('video').forEach(function (v) { v.pause(); });
         if (scroll) window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
@@ -679,7 +725,7 @@
     window.addEventListener('resize', function () { var c = cur; cur = null; show(c); });
     watch(document.getElementById('tools'));
     var h = location.hash.replace('#', '').split('-')[0];
-    show(P[h] ? h : 'rb');
+    show(P[h] ? h : 'sm');
 
     // before / after slider
     var ba = $('ba'), before = ba.querySelector('.before'), bar = ba.querySelector('.bar'), knob = ba.querySelector('.knob'), drag = false, base = .5;
