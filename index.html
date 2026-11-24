@@ -3,256 +3,350 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Retouch Beauty — ريتاتش ومكياج لكل الوجوه ببريمير</title>
-<meta name="description" content="إضافة لأدوبي بريمير برو: ريتاتش بشرة ومكياج وتنحيف وجه لكل الوجوه بالفيديو، مباشرة على التايملاين، بكبسة وحدة.">
-<meta property="og:title" content="Retouch Beauty — ريتاتش ومكياج لكل الوجوه ببريمير">
-<meta property="og:description" content="تنعيم، حبوب، هالات، شكل الوجه، مكياج ولوكات جاهزة… لكل وجه بالفيديو، بكبسة وحدة.">
+<title>Retouch Beauty · Swift Motion</title>
+<meta name="description" content="أدوات للمبدعين: Retouch Beauty لريتاتش ومكياج الوجوه ببريمير، و Swift Motion لموشن احترافي بكبسة جوّا أفتر إفكتس.">
+<meta property="og:title" content="Retouch Beauty · Swift Motion">
+<meta property="og:description" content="ريتاتش لكل الوجوه ببريمير، وموشن احترافي بكبسة بأفتر إفكتس.">
 <meta property="og:image" content="img/panel.jpg">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23c084fc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='24' height='24' rx='7' fill='url(%23g)'/%3E%3Cpath fill='%23fff' d='M12 4l1.8 5.2 5.2 1.4-5.2 1.8L12 17.6l-1.8-5.2L5 10.6l5.2-1.4z'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23000'/%3E%3Cpath fill='%237EF2B9' d='M12 4l1.8 5.2 5.2 1.4-5.2 1.8L12 17.6l-1.8-5.2L5 10.6l5.2-1.4z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* look = boim.studio: pure black, white text at opacity steps, ONE mint accent + mint glow, glass islands.
+     Headings = images rendered in Thmanyah (test/fontgen; the font files are never published: Thmanyah licence). */
   :root {
-    --bg: #07040e; --surface: #120a24; --card: #160d2b; --line: #2a1d45; --text: #f1ecff; --muted: #a395c4;
-    --acc: #8b5cf6; --acc2: #c084fc; --ok: #4ade80;
-    --grad: linear-gradient(135deg, #7c3aed, #a855f7 55%, #d08cff);
-    --glass: linear-gradient(180deg, rgba(34,20,62,.6), rgba(18,10,34,.6));
-    --glow: 0 0 0 1px rgba(139,92,246,.5), 0 0 28px rgba(139,92,246,.35);
+    --bg: #000; --s1: #0b0b0b; --s2: #131313; --line: rgba(255,255,255,.08); --line2: rgba(255,255,255,.14);
+    --t: #fff; --t75: rgba(255,255,255,.75); --t55: rgba(255,255,255,.55); --t30: rgba(255,255,255,.3);
+    --mint: #7EF2B9; --mint2: #b9ffd9; --mintGlow: rgba(126,242,185,.35);
+    --ease: cubic-bezier(.22,1,.36,1); --spring: cubic-bezier(.34,1.56,.64,1);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; background: var(--bg); }
-  body { margin: 0; color: var(--text); font: 16px/1.7 "Cairo", "Segoe UI", Tahoma, sans-serif; overflow-x: hidden;
-    background: radial-gradient(70% 45% at 85% 0%, rgba(139,92,246,.28), transparent 70%), radial-gradient(50% 35% at 0% 30%, rgba(192,132,252,.12), transparent 70%), var(--bg); }
+  body { margin: 0; color: var(--t); font: 16px/1.75 "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif; overflow-x: hidden; background: var(--bg); }
+  body::before { content: ''; position: fixed; inset: -20vh -10vw auto; height: 70vh; z-index: -1; pointer-events: none;
+    background: radial-gradient(50% 60% at 50% 0%, rgba(126,242,185,.22), rgba(126,242,185,.06) 45%, transparent 75%); transition: opacity .8s; }
   a { color: inherit; text-decoration: none; }
-  img { max-width: 100%; display: block; }
+  img, video { max-width: 100%; display: block; }
   .wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
   svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* nav */
-  nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: rgba(7,4,14,.6); border-bottom: 1px solid rgba(42,29,69,.6); }
-  nav .wrap { display: flex; align-items: center; gap: 14px; height: 64px; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; direction: ltr; }
-  .logo { width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, #8b5cf6, #c084fc); display: grid; place-items: center; box-shadow: 0 0 22px rgba(139,92,246,.65), inset 0 1px 0 rgba(255,255,255,.3); }
-  .logo svg { width: 20px; height: 20px; fill: #fff; }
-  nav .links { display: flex; gap: 22px; margin-inline-start: auto; color: var(--muted); font-size: 15px; }
-  nav .links a:hover { color: #fff; }
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; padding: 12px 22px; font-weight: 700; font-size: 16px; border: 1px solid var(--line); background: var(--glass); cursor: pointer; transition: .2s; font-family: inherit; color: var(--text); }
-  .btn:hover { border-color: #6d45c4; transform: translateY(-1px); }
-  .btn.primary { background: var(--grad); border-color: #a77bff; color: #fff; box-shadow: 0 10px 34px rgba(124,58,237,.45), inset 0 1px 0 rgba(255,255,255,.3); }
-  .btn.primary:hover { box-shadow: 0 14px 44px rgba(124,58,237,.65), inset 0 1px 0 rgba(255,255,255,.35); }
-  .btn.sm { padding: 8px 16px; font-size: 14px; border-radius: 12px; }
+  /* ---------- glass + mint button (pointer-following shine, press) ---------- */
+  .glass { position: relative; background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); border: 1px solid var(--line);
+    backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 20px 50px rgba(0,0,0,.5); }
+  .btn { --mx: 50%; --my: 50%; position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px;
+    padding: 12px 24px; font: 600 16px/1.2 inherit; font-family: inherit; color: var(--t); cursor: pointer; border: 1px solid var(--line2);
+    background: rgba(255,255,255,.04); transition: transform .35s var(--spring), border-color .3s, box-shadow .3s; isolation: isolate; }
+  .btn::before { content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(120px circle at var(--mx) var(--my), rgba(255,255,255,.22), transparent 70%); }
+  .btn:hover::before { opacity: 1; }
+  .btn:hover { border-color: rgba(255,255,255,.3); }
+  .btn:active { transform: scale(.95); }
+  .btn.mint { color: #03150c; border-color: transparent; background: linear-gradient(180deg, #a6ffd2, var(--mint) 55%, #5fe0a2);
+    box-shadow: 0 0 0 1px rgba(126,242,185,.5), 0 10px 40px rgba(126,242,185,.35), inset 0 1px 0 rgba(255,255,255,.6); }
+  .btn.mint::before { background: radial-gradient(120px circle at var(--mx) var(--my), rgba(255,255,255,.65), transparent 70%); }
+  .btn.mint:hover { box-shadow: 0 0 0 1px rgba(126,242,185,.7), 0 14px 54px rgba(126,242,185,.5), inset 0 1px 0 rgba(255,255,255,.7); }
+  .btn.sm { padding: 8px 16px; font-size: 14px; }
 
-  /* hero */
-  .hero { padding: 72px 0 56px; }
-  .hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
-  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px; border-radius: 99px; border: 1px solid #3f2a6e; background: rgba(139,92,246,.12); color: #dccbff; font-size: 14px; }
-  .pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok); }
-  h1 { font-size: clamp(34px, 5.4vw, 60px); line-height: 1.25; margin: 18px 0 14px; font-weight: 900; }
-  h1 em { white-space: nowrap; font-style: normal; background: linear-gradient(90deg, #b794ff, #e3b8ff); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 24px rgba(168,85,247,.5)); }
-  .lead { color: #cfc3ea; font-size: 18px; max-width: 560px; margin: 0 0 28px; }
-  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
-  .trust { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 26px; color: var(--muted); font-size: 14px; }
-  .trust span { display: inline-flex; align-items: center; gap: 6px; }
-  .trust svg { width: 17px; height: 17px; color: var(--acc2); }
-  .mock { position: relative; justify-self: center; }
-  .mock::before { content: ''; position: absolute; inset: -14% -18%; background: radial-gradient(closest-side, rgba(139,92,246,.45), transparent); filter: blur(30px); z-index: -1; }
-  .mock .frame { width: 300px; border-radius: 22px; padding: 8px; background: linear-gradient(160deg, rgba(139,92,246,.5), rgba(42,29,69,.4) 40%, rgba(192,132,252,.35)); box-shadow: 0 30px 80px rgba(0,0,0,.6), var(--glow); transform: rotate(-2deg); }
-  .mock img { border-radius: 16px; width: 100%; }
-  .float { position: absolute; padding: 9px 14px; border-radius: 14px; background: rgba(18,10,36,.85); border: 1px solid #3f2a6e; backdrop-filter: blur(8px); font-size: 13px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,.5); display: flex; align-items: center; gap: 8px; white-space: nowrap; animation: bob 5s ease-in-out infinite; }
-  .float b { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--grad); box-shadow: 0 0 12px rgba(139,92,246,.6); }
-  .float b svg { width: 15px; height: 15px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .f1 { top: 14%; inset-inline-start: -64px; } .f2 { bottom: 16%; inset-inline-end: -58px; animation-delay: -2.5s; }
-  @keyframes bob { 50% { transform: translateY(-10px); } }
+  /* ---------- top island: product switch + links, a mint light glides under the hovered item ---------- */
+  header.top { position: fixed; inset: 14px 0 auto; z-index: 40; display: flex; justify-content: center; pointer-events: none; padding: 0 12px; }
+  .island { pointer-events: auto; display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 28px; max-width: 100%; }
+  .island .glide { position: absolute; top: 6px; height: calc(100% - 12px); left: 0; width: 0; border-radius: 22px; pointer-events: none; opacity: 0; z-index: 0;
+    background: radial-gradient(60% 90% at 50% 50%, rgba(126,242,185,.55), rgba(126,242,185,.12) 60%, transparent 85%);
+    filter: blur(2px); transition: left .5s var(--ease), width .5s var(--ease), opacity .3s; }
+  .island a, .island button.tab { position: relative; z-index: 1; border: 0; background: none; color: var(--t75); font: 500 14px/1 inherit; font-family: inherit;
+    padding: 12px 14px; border-radius: 22px; cursor: pointer; white-space: nowrap; transition: color .25s; }
+  .island a:hover, .island button.tab:hover { color: #fff; }
+  .switch { position: relative; display: flex; padding: 3px; border-radius: 22px; background: rgba(0,0,0,.45); border: 1px solid var(--line); }
+  .switch .pill { position: absolute; top: 3px; bottom: 3px; border-radius: 19px; background: rgba(126,242,185,.14); border: 1px solid rgba(126,242,185,.45);
+    box-shadow: 0 0 18px rgba(126,242,185,.3), inset 0 1px 0 rgba(255,255,255,.15); transition: left .55s var(--spring), width .55s var(--spring); }
+  .switch button.tab { padding: 9px 14px; font-weight: 600; }
+  .switch button.tab.on { color: #fff; }
+  .island .sep { width: 1px; height: 22px; background: var(--line2); margin: 0 4px; }
+  .island .links { display: flex; }
+  .island .dot { position: absolute; bottom: 5px; width: 4px; height: 4px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint); transition: left .5s var(--ease), opacity .3s; opacity: 0; z-index: 1; }
 
-  /* headings = images rendered in Thmanyah (test/fontgen; the font file itself is never published) */
-  img.ttl { display: inline-block; max-width: 100%; height: auto; vertical-align: middle; }
+  /* ---------- reveal: rises out of a blur (boim «island-tick») ---------- */
+  .rv { opacity: 0; filter: blur(10px); translate: 0 26px; transition: opacity .9s var(--ease), filter .9s var(--ease), translate .9s var(--ease); }
+  .rv.in { opacity: 1; filter: none; translate: 0 0; }
+  .rv.d1 { transition-delay: .08s; } .rv.d2 { transition-delay: .16s; } .rv.d3 { transition-delay: .24s; } .rv.d4 { transition-delay: .32s; }
+  main.prod { display: none; }
+  main.prod.on { display: block; animation: pin .8s var(--ease) both; }
+  main.prod.out { display: block; animation: pout .32s ease-in both; }
+  @keyframes pin { from { opacity: 0; filter: blur(14px); translate: 0 40px; } }
+  @keyframes pout { to { opacity: 0; filter: blur(14px); translate: 0 -30px; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 140px 0 40px; min-height: 92svh; display: flex; align-items: center; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+  .tag { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 99px; border: 1px solid var(--line2); background: rgba(255,255,255,.03); color: var(--t75); font-size: 14px; }
+  .tag i { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 0 rgba(126,242,185,.5); animation: lamp 2.2s infinite; }
+  @keyframes lamp { 50% { opacity: .55; box-shadow: 0 0 0 .45rem rgba(126,242,185,0); } 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(126,242,185,.5); } }
+  h1 { margin: 18px 0 12px; line-height: 0; }
+  img.ttl { display: inline-block; max-width: 100%; height: auto; }
   h1 img.ttl { margin-inline-start: -14px; }
-  .head h2, .final h2 { line-height: 0; margin: 10px 0 14px; }
-  @media (max-width: 900px) { h1 img.ttl { margin-inline-start: 0; } }
-  section { padding: 64px 0; }
-  .head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
-  .head small { color: var(--acc2); font-weight: 700; letter-spacing: .5px; }
-  h2 { font-size: clamp(26px, 3.6vw, 38px); margin: 6px 0 10px; font-weight: 800; line-height: 1.35; }
-  .head p { color: var(--muted); margin: 0; }
+  .lead { color: var(--t75); font-size: 18px; max-width: 560px; margin: 0 0 28px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .trust { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 26px; color: var(--t55); font-size: 14px; }
+  .trust span { display: inline-flex; align-items: center; gap: 6px; }
+  .trust svg { width: 17px; height: 17px; color: var(--mint); }
 
-  /* features */
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .feat { padding: 24px; border-radius: 20px; background: var(--glass); border: 1px solid var(--line); transition: .25s; }
-  .feat:hover { border-color: var(--acc); box-shadow: var(--glow); transform: translateY(-3px); }
-  .feat .ic { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 14px; color: #fff;
-    background: linear-gradient(135deg, rgba(139,92,246,.5), rgba(192,132,252,.2)); border: 1px solid var(--acc); box-shadow: 0 0 22px rgba(139,92,246,.45); }
-  .feat h3 { margin: 0 0 6px; font-size: 19px; }
-  .feat p { margin: 0; color: var(--muted); font-size: 15px; }
+  .mock { position: relative; justify-self: center; }
+  .mock::before { content: ''; position: absolute; inset: -16% -20%; background: radial-gradient(closest-side, rgba(126,242,185,.28), transparent); filter: blur(30px); z-index: -1; }
+  .mock .frame { width: 300px; border-radius: 26px; padding: 8px; transform: rotate(-2deg); }
+  .mock .frame img { border-radius: 19px; width: 100%; }
+  .float { position: absolute; padding: 9px 14px; border-radius: 16px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; white-space: nowrap; animation: bob 5s ease-in-out infinite alternate; }
+  .float b { width: 26px; height: 26px; border-radius: 9px; display: grid; place-items: center; background: rgba(126,242,185,.15); border: 1px solid rgba(126,242,185,.5); color: var(--mint); }
+  .float b svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .f1 { top: 14%; inset-inline-start: -64px; } .f2 { bottom: 16%; inset-inline-end: -58px; animation-delay: -2.5s; }
+  @keyframes bob { from { translate: 0 -6px; } to { translate: 0 6px; } }
+
+  /* Swift Motion hero: three floating clips */
+  .stack { position: relative; width: 420px; max-width: 100%; aspect-ratio: 1 / .92; }
+  .stack .clip { position: absolute; border-radius: 20px; padding: 6px; animation: bob 6s ease-in-out infinite alternate; }
+  .stack video { border-radius: 15px; width: 100%; background: #000; }
+  .stack .c1 { width: 74%; top: 0; inset-inline-start: 0; z-index: 2; }
+  .stack .c2 { width: 52%; bottom: 4%; inset-inline-end: 0; z-index: 3; animation-delay: -2s; }
+  .stack .c3 { width: 44%; bottom: 0; inset-inline-start: 6%; z-index: 1; animation-delay: -4s; opacity: .85; }
+
+  /* ---------- numbers ---------- */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 10px; }
+  .stat { padding: 22px 24px; border-radius: 22px; }
+  .stat .n { font-size: clamp(36px, 5vw, 54px); font-weight: 700; line-height: 1; direction: ltr; text-align: right; font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #fff, var(--mint2) 60%, var(--mint)); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 18px rgba(126,242,185,.25)); }
+  .stat .n.tick { animation: tick .5s var(--ease); }
+  @keyframes tick { from { filter: blur(4px); translate: 0 30%; opacity: .2; } }
+  .stat p { margin: 8px 0 0; color: var(--t55); font-size: 14px; }
+
+  /* ---------- marquee ---------- */
+  .marq { overflow: hidden; border-block: 1px solid var(--line); padding: 16px 0; margin: 40px 0 0; mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); direction: ltr; }
+  .marq .run { display: flex; width: max-content; animation: run 34s linear infinite; }
+  .marq span { font-size: 20px; font-weight: 600; color: var(--t30); padding: 0 22px; white-space: nowrap; display: inline-flex; align-items: center; gap: 44px; }
+  .marq span::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 10px var(--mint); }
+  @keyframes run { to { transform: translateX(-50%); } }
+
+  /* ---------- sections ---------- */
+  section { padding: 72px 0; }
+  .head { text-align: center; max-width: 660px; margin: 0 auto 40px; }
+  .head small { color: var(--mint); font-weight: 600; letter-spacing: .5px; }
+  .head h2 { line-height: 0; margin: 10px 0 14px; }
+  .head p { color: var(--t55); margin: 0; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .card { --mx: 50%; --my: 50%; position: relative; overflow: hidden; padding: 26px; border-radius: 24px; background: var(--s1); border: 1px solid var(--line); transition: border-color .3s, translate .4s var(--ease); }
+  .card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .35s; pointer-events: none;
+    background: radial-gradient(260px circle at var(--mx) var(--my), rgba(126,242,185,.13), transparent 70%); }
+  .card:hover { border-color: rgba(126,242,185,.35); translate: 0 -3px; }
+  .card:hover::before { opacity: 1; }
+  .card .ic { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 14px; color: var(--mint);
+    background: rgba(126,242,185,.08); border: 1px solid rgba(126,242,185,.3); }
+  .card h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
+  .card p { margin: 0; color: var(--t55); font-size: 15px; }
 
   /* before / after */
   .bawrap { display: grid; grid-template-columns: minmax(0, 440px) 220px; gap: 18px; justify-content: center; align-items: center; }
   .bathumbs { display: grid; gap: 10px; }
-  .bathumbs button { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 16px; border: 1px solid var(--line); background: var(--glass); color: var(--text); font: inherit; text-align: start; cursor: pointer; transition: .2s; }
-  .bathumbs button:hover { border-color: #6d45c4; }
-  .bathumbs button.on { border-color: var(--acc); box-shadow: var(--glow); background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(26,14,48,.8)); }
-  .bathumbs img { width: 58px; height: 72px; object-fit: cover; border-radius: 10px; flex: 0 0 58px; }
-  .bathumbs span { font-weight: 700; font-size: 14.5px; line-height: 1.4; }
-  .bathumbs small { color: var(--muted); font-weight: 400; font-size: 12.5px; }
-  .credit { text-align: center; color: var(--muted); font-size: 12.5px; margin: 14px 0 0; }
+  .bathumbs button { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 18px; border: 1px solid var(--line); background: var(--s1); color: var(--t); font: inherit; text-align: start; cursor: pointer; transition: .25s; }
+  .bathumbs button:hover { border-color: var(--line2); }
+  .bathumbs button.on { border-color: rgba(126,242,185,.55); box-shadow: 0 0 24px rgba(126,242,185,.18); background: rgba(126,242,185,.06); }
+  .bathumbs img { width: 58px; height: 72px; object-fit: cover; border-radius: 12px; flex: 0 0 58px; }
+  .bathumbs span { font-weight: 600; font-size: 14.5px; line-height: 1.4; }
+  .bathumbs small { color: var(--t55); font-weight: 400; font-size: 12.5px; }
+  .credit { text-align: center; color: var(--t55); font-size: 12.5px; margin: 14px 0 0; }
   .credit a { text-decoration: underline; }
-  @media (max-width: 760px) { .bawrap { grid-template-columns: 1fr; } .bathumbs { grid-template-columns: repeat(3, 1fr); } .bathumbs button { flex-direction: column; text-align: center; gap: 6px; } .bathumbs img { width: 100%; height: auto; aspect-ratio: 4/5; } .bathumbs span { font-size: 13px; } }
-  .ba { position: relative; width: 100%; margin: 0 auto; aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden; border: 1px solid #3f2a6e; box-shadow: var(--glow), 0 30px 80px rgba(0,0,0,.5); user-select: none; touch-action: none; background: #0b0716; direction: ltr; }
+  .ba { position: relative; width: 100%; margin: 0 auto; aspect-ratio: 4 / 5; border-radius: 24px; overflow: hidden; border: 1px solid var(--line2); box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 40px rgba(126,242,185,.08); user-select: none; touch-action: none; background: #050505; direction: ltr; }
   .ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .ba .before { position: absolute; inset: 0; clip-path: inset(0 50% 0 0); }
-  .ba .bar { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 14px rgba(192,132,252,.9); }
-  .ba .knob { position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: var(--grad); border: 2px solid #fff; box-shadow: 0 0 22px rgba(139,92,246,.9); display: grid; place-items: center; cursor: ew-resize; }
-  .ba .knob svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-  .ba .tag { position: absolute; bottom: 14px; padding: 3px 12px; border-radius: 99px; background: rgba(0,0,0,.55); font-size: 13px; font-weight: 700; }
+  .ba .bar { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 14px var(--mint); }
+  .ba .knob { position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: var(--mint); border: 2px solid #fff; box-shadow: 0 0 22px rgba(126,242,185,.8); display: grid; place-items: center; cursor: ew-resize; }
+  .ba .knob svg { width: 22px; height: 22px; stroke: #03150c; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .ba .lbl { position: absolute; bottom: 14px; padding: 3px 12px; border-radius: 99px; background: rgba(0,0,0,.6); font-size: 13px; font-weight: 600; }
   .ba .tl { left: 14px; } .ba .tr { right: 14px; }
-  .ba .empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--muted); padding: 20px;
-    background: radial-gradient(60% 70% at 50% 45%, rgba(139,92,246,.2), transparent), repeating-linear-gradient(45deg, rgba(255,255,255,.02) 0 12px, transparent 12px 24px); }
 
   /* looks */
   .looks { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; max-width: 900px; margin: 0 auto; }
-  .lk { text-align: center; font-size: 14px; color: #d8cdf2; }
-  .lk img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; border: 1px solid var(--line); margin-bottom: 6px; transition: .25s; }
-  .lk:hover img { border-color: var(--acc); box-shadow: var(--glow); transform: scale(1.04); }
+  .lk { text-align: center; font-size: 14px; color: var(--t75); }
+  .lk img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 18px; border: 1px solid var(--line); margin-bottom: 6px; transition: .35s var(--ease); }
+  .lk:hover img { border-color: rgba(126,242,185,.55); box-shadow: 0 0 24px rgba(126,242,185,.25); scale: 1.05; }
+
+  /* Swift Motion gallery: hover plays */
+  .gal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .tile { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); background: #000; aspect-ratio: 16 / 10; cursor: pointer; transition: border-color .3s, translate .4s var(--ease), box-shadow .3s; }
+  .tile video { width: 100%; height: 100%; object-fit: contain; }
+  .tile span { position: absolute; inset-inline-start: 10px; bottom: 10px; padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; background: rgba(0,0,0,.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--line); }
+  .tile:hover { border-color: rgba(126,242,185,.5); translate: 0 -3px; box-shadow: 0 0 30px rgba(126,242,185,.15); }
+  .tile.big { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
 
   /* steps */
-  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: s; }
-  .step { position: relative; padding: 26px 20px 22px; border-radius: 20px; background: var(--glass); border: 1px solid var(--line); }
-  .step::before { counter-increment: s; content: counter(s); position: absolute; top: -16px; inset-inline-start: 20px; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; font-weight: 800; background: var(--grad); box-shadow: 0 0 18px rgba(139,92,246,.7); }
-  .step h3 { margin: 6px 0 4px; font-size: 17px; }
-  .step p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; counter-reset: s; }
+  .step { position: relative; padding: 30px 22px 22px; border-radius: 24px; background: var(--s1); border: 1px solid var(--line); }
+  .step::before { counter-increment: s; content: '0' counter(s); position: absolute; top: 18px; inset-inline-end: 20px; font-weight: 700; font-size: 13px; color: var(--mint); letter-spacing: 1px; }
+  .step h3 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
+  .step p { margin: 0; color: var(--t55); font-size: 14.5px; }
 
-  .warn { display: flex; gap: 18px; align-items: flex-start; padding: 24px; border-radius: 20px; background: var(--glass); border: 1px solid rgba(255,181,71,.35); }
-  .warn .ic { width: 46px; height: 46px; flex: 0 0 46px; border-radius: 14px; display: grid; place-items: center; color: #ffcf7a; background: rgba(255,181,71,.1); border: 1px solid rgba(255,181,71,.4); }
-  .warn h3 { margin: 0 0 6px; font-size: 18px; }
-  .warn p { margin: 0 0 6px; color: #d8cdf2; }
-  .warn .muted { color: var(--muted); font-size: 14.5px; margin: 0; }
-  .warn code { direction: ltr; display: inline-block; padding: 1px 8px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); font-size: 13px; }
-  /* pricing + platforms */
-  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: stretch; }
-  .price { padding: 32px; border-radius: 24px; border: 1px solid #5b3d99; background: linear-gradient(150deg, rgba(139,92,246,.28), rgba(22,13,43,.9) 55%); box-shadow: var(--glow); position: relative; overflow: hidden; }
-  .price::after { content: ''; position: absolute; width: 260px; height: 260px; top: -120px; inset-inline-end: -100px; background: radial-gradient(closest-side, rgba(192,132,252,.35), transparent); }
-  .price .amt { font-size: 52px; font-weight: 900; line-height: 1; margin: 12px 0 4px; direction: ltr; text-align: right; }
-  .price .amt small { font-size: 18px; color: var(--muted); font-weight: 600; }
-  .price .amt s.old { font-size: 24px; font-weight: 700; color: var(--muted); text-decoration-color: #ff6b7d; text-decoration-thickness: 2px; margin-inline-start: 10px; }
-  .price .amt .off { display: inline-block; vertical-align: middle; margin-inline-start: 10px; font-size: 14px; font-weight: 800; padding: 3px 10px; border-radius: 99px; color: #fff; background: linear-gradient(135deg, #ff5d8f, #ff8a5c); box-shadow: 0 0 14px rgba(255,93,143,.5); }
+  .warn { display: flex; gap: 18px; align-items: flex-start; padding: 24px; border-radius: 24px; background: var(--s1); border: 1px solid rgba(255,207,122,.3); }
+  .warn .ic { width: 46px; height: 46px; flex: 0 0 46px; border-radius: 14px; display: grid; place-items: center; color: #ffcf7a; background: rgba(255,181,71,.08); border: 1px solid rgba(255,181,71,.35); }
+  .warn h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
+  .warn p { margin: 0 0 6px; color: var(--t75); }
+  .warn .muted { color: var(--t55); font-size: 14.5px; margin: 0; }
+  .warn code { direction: ltr; display: inline-block; padding: 1px 8px; border-radius: 8px; background: var(--s2); border: 1px solid var(--line); font-size: 13px; }
+
+  /* price + platforms */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: stretch; }
+  .price { padding: 32px; border-radius: 28px; border: 1px solid rgba(126,242,185,.35); background: radial-gradient(90% 80% at 100% 0%, rgba(126,242,185,.14), transparent 60%), var(--s1); position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(126,242,185,.08); }
+  .price .amt { font-size: 56px; font-weight: 700; line-height: 1; margin: 14px 0 4px; direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+  .price .amt small { font-size: 18px; color: var(--t55); font-weight: 500; }
+  .price .amt s.old { font-size: 24px; font-weight: 600; color: var(--t30); text-decoration-color: #ff6b7d; text-decoration-thickness: 2px; margin-inline-start: 10px; }
+  .price .amt .off { display: inline-block; vertical-align: middle; margin-inline-start: 10px; font-size: 14px; font-weight: 700; padding: 3px 10px; border-radius: 99px; color: #03150c; background: var(--mint); box-shadow: 0 0 14px rgba(126,242,185,.5); }
   .price ul { list-style: none; padding: 0; margin: 20px 0 26px; display: grid; gap: 9px; }
-  .price li { display: flex; gap: 10px; align-items: center; }
-  .price li svg { width: 20px; height: 20px; color: var(--ok); flex: 0 0 20px; }
+  .price li { display: flex; gap: 10px; align-items: center; color: var(--t75); }
+  .price li svg { width: 20px; height: 20px; color: var(--mint); flex: 0 0 20px; }
   .price .btn { width: 100%; }
-  .plat { display: grid; gap: 14px; }
-  .pc { display: flex; align-items: center; gap: 16px; padding: 20px 22px; border-radius: 20px; background: var(--glass); border: 1px solid var(--line); }
-  .pc .os { width: 50px; height: 50px; flex: 0 0 50px; border-radius: 14px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); }
+  .plat { display: grid; gap: 12px; align-content: start; }
+  .pc { display: flex; align-items: center; gap: 16px; padding: 20px 22px; border-radius: 22px; background: var(--s1); border: 1px solid var(--line); }
+  .pc .os { width: 50px; height: 50px; flex: 0 0 50px; border-radius: 14px; display: grid; place-items: center; background: var(--s2); border: 1px solid var(--line); }
   .pc .os svg { width: 26px; height: 26px; fill: currentColor; }
-  .pc h3 { margin: 0; font-size: 17px; }
-  .pc p { margin: 0; color: var(--muted); font-size: 14px; }
-  .pc .st { margin-inline-start: auto; font-size: 13px; font-weight: 700; padding: 3px 12px; border-radius: 99px; white-space: nowrap; }
-  .st.ok { color: var(--ok); background: rgba(74,222,128,.1); border: 1px solid rgba(74,222,128,.4); }
-  .st.soon { color: #ffcf7a; background: rgba(255,181,71,.1); border: 1px solid rgba(255,181,71,.35); }
+  .pc h3 { margin: 0; font-size: 17px; font-weight: 600; }
+  .pc p { margin: 0; color: var(--t55); font-size: 14px; }
+  .pc .st { margin-inline-start: auto; font-size: 13px; font-weight: 600; padding: 3px 12px; border-radius: 99px; white-space: nowrap; }
+  .st.ok { color: var(--mint); background: rgba(126,242,185,.08); border: 1px solid rgba(126,242,185,.4); }
+  .st.soon { color: #ffcf7a; background: rgba(255,181,71,.08); border: 1px solid rgba(255,181,71,.3); }
 
   /* faq */
   .faq { max-width: 780px; margin: 0 auto; display: grid; gap: 10px; }
-  details { border-radius: 16px; background: var(--glass); border: 1px solid var(--line); padding: 0 20px; }
-  details[open] { border-color: #5b3d99; }
-  summary { cursor: pointer; list-style: none; padding: 16px 0; font-weight: 700; display: flex; justify-content: space-between; gap: 12px; }
+  details { border-radius: 20px; background: var(--s1); border: 1px solid var(--line); padding: 0 22px; transition: border-color .3s; }
+  details[open] { border-color: rgba(126,242,185,.35); }
+  summary { cursor: pointer; list-style: none; padding: 17px 0; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; }
   summary::-webkit-details-marker { display: none; }
-  summary::after { content: '+'; color: var(--acc2); font-size: 22px; line-height: 1; }
-  details[open] summary::after { content: '−'; }
-  details p { margin: 0 0 16px; color: var(--muted); }
+  summary::after { content: '+'; color: var(--mint); font-size: 22px; line-height: 1; transition: rotate .4s var(--spring); }
+  details[open] summary::after { rotate: 45deg; }
+  details p { margin: 0 0 18px; color: var(--t55); }
 
-  .final { text-align: center; padding: 56px 24px; border-radius: 28px; border: 1px solid #5b3d99; background: radial-gradient(80% 120% at 50% 0%, rgba(139,92,246,.35), rgba(22,13,43,.9) 70%); box-shadow: var(--glow); }
-  .final h2 { margin-top: 0; }
-  .final p { color: #cfc3ea; margin: 0 0 24px; }
+  .final { text-align: center; padding: 64px 24px; border-radius: 32px; border: 1px solid rgba(126,242,185,.3); background: radial-gradient(70% 120% at 50% 0%, rgba(126,242,185,.18), transparent 70%), var(--s1); }
+  .final h2 { line-height: 0; margin: 0 0 14px; }
+  .final p { color: var(--t75); margin: 0 0 26px; }
   .final .cta { justify-content: center; }
 
-  footer { padding: 36px 0 44px; color: var(--muted); font-size: 14px; }
+  /* tools (both products) */
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tool { text-align: start; cursor: pointer; font: inherit; color: inherit; display: flex; gap: 18px; align-items: center; }
+  .tool .lg { width: 64px; height: 64px; flex: 0 0 64px; border-radius: 20px; display: grid; place-items: center; color: var(--mint); background: rgba(126,242,185,.08); border: 1px solid rgba(126,242,185,.35); }
+  .tool .lg svg { width: 30px; height: 30px; }
+  .tool small { color: var(--t55); }
+  .tool .go { margin-inline-start: auto; color: var(--mint); font-size: 22px; transition: translate .4s var(--spring); }
+  .tool:hover .go { translate: -6px 0; }
+  .tool.here { border-color: rgba(126,242,185,.45); }
+
+  footer { padding: 36px 0 44px; color: var(--t55); font-size: 14px; border-top: 1px solid var(--line); margin-top: 40px; }
   footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 
-  .wa { position: fixed; bottom: 18px; left: 18px; z-index: 30; width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: #25d366; box-shadow: 0 8px 26px rgba(37,211,102,.45); }
+  .wa { position: fixed; bottom: 18px; left: 18px; z-index: 30; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #25d366; box-shadow: 0 8px 26px rgba(37,211,102,.4); transition: scale .35s var(--spring); }
+  .wa:hover { scale: 1.08; }
   .wa svg { width: 28px; height: 28px; fill: #fff; }
 
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s, transform .7s; }
-  .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .float { animation: none; } }
-
+  @media (prefers-reduced-motion: reduce) {
+    .rv { opacity: 1; filter: none; translate: none; transition: none; }
+    .float, .stack .clip, .marq .run, .tag i { animation: none; }
+    main.prod.on, main.prod.out { animation: none; }
+  }
+  @media (max-width: 980px) { .island .links { display: none; } .island .sep { display: none; } }
   @media (max-width: 900px) {
-    nav .links { display: none; }
-    nav .btn { margin-inline-start: auto; }
-    .hero { padding-top: 40px; }
+    .hero { padding-top: 120px; min-height: 0; }
     .hero .wrap { grid-template-columns: 1fr; gap: 56px; }
     .hero .text { text-align: center; } .lead { margin-inline: auto; } .cta, .trust { justify-content: center; }
+    h1 img.ttl { margin-inline-start: 0; }
     .grid { grid-template-columns: 1fr 1fr; }
-    .steps { grid-template-columns: 1fr 1fr; row-gap: 28px; }
-    .two { grid-template-columns: 1fr; }
+    .gal { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .two, .tools { grid-template-columns: 1fr; }
+    .stack { margin-inline: auto; }
   }
+  @media (max-width: 760px) { .bawrap { grid-template-columns: 1fr; } .bathumbs { grid-template-columns: repeat(3, 1fr); } .bathumbs button { flex-direction: column; text-align: center; gap: 6px; } .bathumbs img { width: 100%; height: auto; aspect-ratio: 4/5; } .bathumbs span { font-size: 13px; } }
   @media (max-width: 560px) {
     .grid, .steps { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr 1fr; gap: 8px; } .stat { padding: 16px 12px; } .stat p { font-size: 12.5px; }
+    .gal { grid-template-columns: 1fr; } .tile.big { grid-column: auto; grid-row: auto; aspect-ratio: 16 / 10; }
     .mock .frame { width: 250px; }
     .f1 { inset-inline-start: -30px; } .f2 { inset-inline-end: -26px; }
     .float { font-size: 12px; padding: 7px 10px; }
-    section { padding: 48px 0; }
+    section { padding: 52px 0; }
     .price { padding: 24px; }
     .pc { flex-wrap: wrap; }
+    .switch button.tab { padding: 9px 11px; font-size: 13px; }
   }
 </style>
 </head>
-<body>
+<body data-p="rb">
 
-<nav>
-  <div class="wrap">
-    <a class="brand" href="#"><span class="logo"><svg viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg></span>Retouch Beauty</a>
-    <div class="links"><a href="#features">المميزات</a><a href="#looks">اللوكات</a><a href="#how">كيف بتشتغل</a><a href="#price">السعر</a><a href="#faq">أسئلة</a></div>
-    <a class="btn primary sm" data-buy href="#price">اشتري الآن</a>
+<header class="top">
+  <div class="island glass" id="island">
+    <span class="glide" id="glide"></span><span class="dot" id="dot"></span>
+    <div class="switch" id="switch">
+      <span class="pill" id="swPill"></span>
+      <button class="tab" data-to="rb">Retouch Beauty</button>
+      <button class="tab" data-to="sm">Swift Motion</button>
+    </div>
+    <span class="sep"></span>
+    <div class="links" id="links"></div>
+    <a class="btn mint sm" data-buy href="#">واتساب</a>
   </div>
-</nav>
+</header>
 
-<header class="hero">
+<!-- ======================= RETOUCH BEAUTY ======================= -->
+<main class="prod" id="p-rb" data-name="Retouch Beauty">
+<section class="hero">
   <div class="wrap">
     <div class="text">
-      <span class="pill"><i></i> إضافة لـ Adobe Premiere Pro</span>
-      <h1><img class="ttl" src="img/t/h1.png" width="624" height="192" alt="ريتاتش متل كاب كات جوّا بريمير، لكل الوجوه"></h1>
-      <p class="lead">تنعيم بشرة، شيل حبوب وهالات، نحت وجه، ومكياج بلوكات جاهزة… على كل وجه بالفيديو، حتى لو كان جانبي. بكبسة وحدة، مباشرة على التايملاين، بلا تصدير ولا انتظار.</p>
-      <div class="cta">
-        <a class="btn primary" data-buy href="#price">✨ اشتري الآن</a>
-        <a class="btn" data-dl href="https://github.com/manaralmlis5-blip/manaralmlis5-blip.github.io/releases/latest/download/RetouchBeauty-Setup.exe">
-          <svg class="i" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg> تنزيل للويندوز</a>
+      <span class="tag rv"><i></i> إضافة لـ Adobe Premiere Pro</span>
+      <h1 class="rv d1"><img class="ttl" src="img/t/h1.png" width="624" height="192" alt="ريتاتش متل كاب كات جوّا بريمير، لكل الوجوه"></h1>
+      <p class="lead rv d2">تنعيم بشرة، شيل حبوب وهالات، نحت وجه، ومكياج بلوكات جاهزة… على كل وجه بالفيديو، حتى لو كان جانبي. بكبسة وحدة، مباشرة على التايملاين، بلا تصدير ولا انتظار.</p>
+      <div class="cta rv d3">
+        <a class="btn mint" href="#rb-price">✨ اشتري الآن</a>
+        <a class="btn" data-dl="rb" href="#"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg> تنزيل للويندوز</a>
       </div>
-      <div class="trust">
+      <div class="trust rv d4">
         <span><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg> كلو على جهازك، بدون نت</span>
         <span><svg class="i" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg> على كرت الشاشة</span>
         <span><svg class="i" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 3v5h5M4 13a8 8 0 0 0 14.3 4.9L20 16M20 21v-5h-5"/></svg> تحديثات مجانية</span>
       </div>
     </div>
-    <div class="mock reveal">
-      <div class="frame"><img src="img/panel.jpg" alt="لوحة Retouch Beauty جوّا بريمير برو" width="342" height="724"></div>
-      <div class="float f1"><b><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/></svg></b>يلقط الوجه بأي اتجاه</div>
-      <div class="float f2"><b><svg viewBox="0 0 24 24"><path d="M12 3c3 3.5 6 6.6 6 10a6 6 0 0 1-12 0c0-3.4 3-6.5 6-10z"/></svg></b>بشرة ناعمة طبيعية</div>
-    </div>
-  </div>
-</header>
-
-<section id="features">
-  <div class="wrap">
-    <div class="head reveal"><small>كل شي بمكان واحد</small><h2><img class="ttl" src="img/t/feat.png" width="480" height="126" alt="كل اللي بتعملو بكاب كات… صار ببريمير"></h2><p>تحكّم كامل بكل تفصيلة، وكل تعديل بيبيّن فوراً على المعاينة.</p></div>
-    <div class="grid">
-      <div class="feat reveal"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3c3 3.5 6 6.6 6 10a6 6 0 0 1-12 0c0-3.4 3-6.5 6-10z"/><path d="M9.5 14a2.5 2.5 0 0 0 2.5 2.5"/></svg></div><h3>بشرة نضيفة</h3><p>تنعيم بيحافظ على ملمس البشرة الطبيعي، شيل الحبوب والبقع، التجاعيد، خطوط الضحكة، وتوحيد اللون.</p></div>
-      <div class="feat reveal"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3c4 0 7 3 7 7.5 0 4.8-3.5 10.5-7 10.5S5 15.3 5 10.5C5 6 8 3 12 3z"/><path d="M9.5 10h.01M14.5 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"/></svg></div><h3>شكل الوجه</h3><p>تصغير وتنحيف، وجه V، الفك وعظام الخد، الدقن والجبهة، وشد الوجه، كلو بسلايدرات بسيطة.</p></div>
-      <div class="feat reveal"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>العيون والحواجب</h3><p>تكبير وتفتيح العيون، شيل الهالات والانتفاخ، رفع وتعبئة الحواجب، وعدسات ملوّنة.</p></div>
-      <div class="feat reveal"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M9 21h6v-8H9z"/><path d="M10 13V8l4-4v9"/><path d="M9 17h6"/></svg></div><h3>مكياج كامل</h3><p>أحمر شفايف، بلاشر، آيلاينر ورموش، ظلال، كونتور وهايلايتر، و13 لوك جاهز بكبسة.</p></div>
-      <div class="feat reveal"><div class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="11" r="2.5"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M13.5 19a4 4 0 0 1 7 0"/></svg></div><h3>كل الوجوه سوا</h3><p>بيلقط كل الوجوه بالكادر ويتبعها حتى لو الوجه جانبي أو بيتحرك، بلا ما تعمل ماسك ولا تراكينغ.</p></div>
-      <div class="feat reveal"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><h3>لايف على التايملاين</h3><p>إفكت حقيقي ببريمير: بيشتغل على كرت الشاشة، بيبيّن فوراً، وبيطلع بالتصدير متل ما شفته.</p></div>
+    <div class="mock rv d2">
+      <div class="frame glass"><img src="img/panel.jpg" alt="لوحة Retouch Beauty جوّا بريمير برو" width="342" height="724"></div>
+      <div class="float glass f1"><b><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/></svg></b>يلقط الوجه بأي اتجاه</div>
+      <div class="float glass f2"><b><svg viewBox="0 0 24 24"><path d="M12 3c3 3.5 6 6.6 6 10a6 6 0 0 1-12 0c0-3.4 3-6.5 6-10z"/></svg></b>بشرة ناعمة طبيعية</div>
     </div>
   </div>
 </section>
 
-<section id="before-after">
+<div class="wrap stats">
+  <div class="stat glass rv"><div class="n" data-count="13">0</div><p>لوك مكياج جاهز</p></div>
+  <div class="stat glass rv d1"><div class="n" data-count="30" data-suffix="+">0</div><p>تعديل للبشرة والوجه والعيون</p></div>
+  <div class="stat glass rv d2"><div class="n" data-count="1">0</div><p>كبسة لكل الوجوه بالكادر</p></div>
+</div>
+<div class="marq"><div class="run"></div></div>
+
+<section id="rb-features">
   <div class="wrap">
-    <div class="head reveal"><small>شوف الفرق</small><h2><img class="ttl" src="img/t/ba.png" width="424" height="71" alt="قبل وبعد، بكبسة وحدة"></h2><p>صور حقيقية مرّت على Retouch Beauty جوّا بريمير: تنعيم، شيل حبوب، تفتيح عيون، نحت خفيف ومكياج ناعم، بلا أي فوتوشوب. اسحب الخط لتقارن.</p></div>
-    <div class="bawrap reveal">
+    <div class="head rv"><small>كل شي بمكان واحد</small><h2><img class="ttl" src="img/t/feat.png" width="480" height="126" alt="كل اللي بتعملو بكاب كات… صار ببريمير"></h2><p>تحكّم كامل بكل تفصيلة، وكل تعديل بيبيّن فوراً على المعاينة.</p></div>
+    <div class="grid">
+      <div class="card rv"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3c3 3.5 6 6.6 6 10a6 6 0 0 1-12 0c0-3.4 3-6.5 6-10z"/><path d="M9.5 14a2.5 2.5 0 0 0 2.5 2.5"/></svg></div><h3>بشرة نضيفة</h3><p>تنعيم بيحافظ على ملمس البشرة الطبيعي، شيل الحبوب والبقع، التجاعيد، خطوط الضحكة، وتوحيد اللون.</p></div>
+      <div class="card rv d1"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3c4 0 7 3 7 7.5 0 4.8-3.5 10.5-7 10.5S5 15.3 5 10.5C5 6 8 3 12 3z"/><path d="M9.5 10h.01M14.5 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"/></svg></div><h3>شكل الوجه</h3><p>تصغير وتنحيف، وجه V، الفك وعظام الخد، الدقن والجبهة، وشد الوجه، كلو بسلايدرات بسيطة.</p></div>
+      <div class="card rv d2"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>العيون والحواجب</h3><p>تكبير وتفتيح العيون، شيل الهالات والانتفاخ، رفع وتعبئة الحواجب، وعدسات ملوّنة.</p></div>
+      <div class="card rv"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M9 21h6v-8H9z"/><path d="M10 13V8l4-4v9"/><path d="M9 17h6"/></svg></div><h3>مكياج كامل</h3><p>أحمر شفايف، بلاشر، آيلاينر ورموش، ظلال، كونتور وهايلايتر، و13 لوك جاهز بكبسة.</p></div>
+      <div class="card rv d1"><div class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="11" r="2.5"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M13.5 19a4 4 0 0 1 7 0"/></svg></div><h3>كل الوجوه سوا</h3><p>بيلقط كل الوجوه بالكادر ويتبعها حتى لو الوجه جانبي أو بيتحرك، بلا ما تعمل ماسك ولا تراكينغ.</p></div>
+      <div class="card rv d2"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><h3>لايف على التايملاين</h3><p>إفكت حقيقي ببريمير: بيشتغل على كرت الشاشة، بيبيّن فوراً، وبيطلع بالتصدير متل ما شفته.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="rb-ba">
+  <div class="wrap">
+    <div class="head rv"><small>شوف الفرق</small><h2><img class="ttl" src="img/t/ba.png" width="424" height="71" alt="قبل وبعد، بكبسة وحدة"></h2><p>صور حقيقية مرّت على Retouch Beauty جوّا بريمير: تنعيم، شيل حبوب، تفتيح عيون، نحت خفيف ومكياج ناعم، بلا أي فوتوشوب. اسحب الخط لتقارن.</p></div>
+    <div class="bawrap rv">
       <div class="ba" id="ba">
-        <!-- pairs: img/ba/<n>-before.jpg + <n>-after.jpg, 880x1100 (frames exported from Premiere with the effect on/off) -->
         <img id="baAfter" src="img/ba/1-after.jpg" alt="بعد الريتاتش" width="880" height="1100">
         <div class="before"><img id="baBefore" src="img/ba/1-before.jpg" alt="قبل الريتاتش" width="880" height="1100"></div>
-        <span class="tag tl">قبل</span><span class="tag tr">بعد</span>
+        <span class="lbl tl">قبل</span><span class="lbl tr">بعد</span>
         <div class="bar"></div><div class="knob"><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></div>
       </div>
       <div class="bathumbs" id="baThumbs">
@@ -265,28 +359,28 @@
   </div>
 </section>
 
-<section id="looks">
+<section id="rb-looks">
   <div class="wrap">
-    <div class="head reveal"><small>مكياج بكبسة</small><h2><img class="ttl" src="img/t/looks.png" width="240" height="71" alt="13 لوك جاهز"></h2><p>اختار اللوك وعدّل قوته من سلايدر واحد، أو ركّب لوكك من الصفر.</p></div>
-    <div class="looks reveal" id="lookGrid"></div>
+    <div class="head rv"><small>مكياج بكبسة</small><h2><img class="ttl" src="img/t/looks.png" width="240" height="71" alt="13 لوك جاهز"></h2><p>اختار اللوك وعدّل قوته من سلايدر واحد، أو ركّب لوكك من الصفر.</p></div>
+    <div class="looks rv" id="lookGrid"></div>
   </div>
 </section>
 
-<section id="how">
+<section id="rb-how">
   <div class="wrap">
-    <div class="head reveal"><small>سهلة كتير</small><h2><img class="ttl" src="img/t/how.png" width="475" height="71" alt="من الشراء للريتاتش بدقايق"></h2></div>
+    <div class="head rv"><small>سهلة كتير</small><h2><img class="ttl" src="img/t/how.png" width="475" height="71" alt="من الشراء للريتاتش بدقايق"></h2></div>
     <div class="steps">
-      <div class="step reveal"><h3>نزّل وثبّت</h3><p>نزّل ملف التثبيت وشغّله. بيركّب الإضافة ببريمير لحالو.</p></div>
-      <div class="step reveal"><h3>ابعتلنا رقم جهازك</h3><p>افتح Window ← Extensions ← Retouch Beauty، انسخ رقم الجهاز وابعتلنا ياه على واتساب.</p></div>
-      <div class="step reveal"><h3>فعّل بالمفتاح</h3><p>بعد الدفع بيوصلك مفتاح التفعيل. الصقه باللوحة واكبس تفعيل.</p></div>
-      <div class="step reveal"><h3>حدد الكليب واكبس</h3><p>حدد الفيديو بالتايملاين واكبس «تطبيق الريتاتش». خلص!</p></div>
+      <div class="step rv"><h3>نزّل وثبّت</h3><p>نزّل ملف التثبيت وشغّله. بيركّب الإضافة ببريمير لحالو.</p></div>
+      <div class="step rv d1"><h3>ابعتلنا رقم جهازك</h3><p>افتح Window ← Extensions ← Retouch Beauty، انسخ رقم الجهاز وابعتلنا ياه على واتساب.</p></div>
+      <div class="step rv d2"><h3>فعّل بالمفتاح</h3><p>بعد الدفع بيوصلك مفتاح التفعيل. الصقه باللوحة واكبس تفعيل.</p></div>
+      <div class="step rv d3"><h3>حدد الكليب واكبس</h3><p>حدد الفيديو بالتايملاين واكبس «تطبيق الريتاتش». خلص!</p></div>
     </div>
   </div>
 </section>
 
-<section id="safety" style="padding-top:0">
+<section style="padding-top:0">
   <div class="wrap">
-    <div class="warn reveal">
+    <div class="warn rv">
       <div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M12 8v4M12 16h.01"/></svg></div>
       <div>
         <h3>لو طلعتلك رسالة أمان وقت التثبيت</h3>
@@ -297,12 +391,12 @@
   </div>
 </section>
 
-<section id="price">
+<section id="rb-price">
   <div class="wrap two">
-    <div class="price reveal">
-      <span class="pill" id="priceTag">ترخيص مدى الحياة</span>
+    <div class="price rv">
+      <span class="tag" id="priceTag">ترخيص مدى الحياة</span>
       <div class="amt" id="priceAmt"></div>
-      <div class="muted" style="color:var(--muted)">دفعة وحدة، بلا اشتراك شهري</div>
+      <div style="color:var(--t55)">دفعة وحدة، بلا اشتراك شهري</div>
       <ul>
         <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> كل الأدوات: بشرة، شكل وجه، عيون، مكياج</li>
         <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> 13 لوك مكياج جاهز</li>
@@ -310,45 +404,163 @@
         <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> دعم مباشر على واتساب</li>
         <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg> المفتاح لجهاز واحد</li>
       </ul>
-      <a class="btn primary" data-buy href="#">
-        <svg class="i" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg> اشتري على واتساب</a>
+      <a class="btn mint" data-buy href="#"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg> اشتري على واتساب</a>
     </div>
     <div class="plat">
-      <div class="pc reveal"><div class="os"><svg viewBox="0 0 24 24"><path d="M3 5.5l7.5-1v7H3zM11.5 4.3L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg></div><div><h3>ويندوز 10 و 11</h3><p>Premiere Pro 2022 وأحدث</p></div><span class="st ok">متوفر</span></div>
-      <div class="pc reveal"><div class="os"><svg viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.5 1.3-.1 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.5 1-1.4 1.3-2.7 1.4-2.8-.1 0-2.6-1-2.6-4.1zM13.9 4.9c.7-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z"/></svg></div><div><h3>ماك</h3><p>قريباً، تابعنا ليوصلك خبر</p></div><span class="st soon">قريباً</span></div>
-      <div class="pc reveal"><div class="os"><svg class="i" viewBox="0 0 24 24" style="fill:none"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div><div><h3>كرت الشاشة</h3><p>أسرع شي على كروت NVIDIA، وبيشتغل على باقي الكروت كمان</p></div></div>
+      <div class="pc rv d1"><div class="os"><svg viewBox="0 0 24 24"><path d="M3 5.5l7.5-1v7H3zM11.5 4.3L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg></div><div><h3>ويندوز 10 و 11</h3><p>Premiere Pro 2022 وأحدث</p></div><span class="st ok">متوفر</span></div>
+      <div class="pc rv d2"><div class="os"><svg viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.5 1.3-.1 1.700-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.5 1-1.4 1.3-2.7 1.4-2.8-.1 0-2.6-1-2.6-4.1zM13.9 4.9c.7-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z"/></svg></div><div><h3>ماك</h3><p>قريباً، تابعنا ليوصلك خبر</p></div><span class="st soon">قريباً</span></div>
+      <div class="pc rv d3"><div class="os"><svg class="i" viewBox="0 0 24 24" style="fill:none"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div><div><h3>كرت الشاشة</h3><p>أسرع شي على كروت NVIDIA، وبيشتغل على باقي الكروت كمان</p></div></div>
     </div>
   </div>
 </section>
 
-<section id="faq">
+<section id="rb-faq">
   <div class="wrap">
-    <div class="head reveal"><small>عندك سؤال؟</small><h2><img class="ttl" src="img/t/faq.png" width="245" height="71" alt="أسئلة متكررة"></h2></div>
+    <div class="head rv"><small>عندك سؤال؟</small><h2><img class="ttl" src="img/t/faq.png" width="245" height="71" alt="أسئلة متكررة"></h2></div>
     <div class="faq">
-      <details class="reveal"><summary>بتشتغل على بريمير تبعي؟</summary><p>إذا عندك Adobe Premiere Pro 2022 أو أحدث على ويندوز 10 أو 11، إي. نسخة الماك قريباً.</p></details>
-      <details class="reveal"><summary>بدها نت لتشتغل؟</summary><p>لا. كل الشغل بيصير على جهازك، وما في ولا صورة من الفيديو بتطلع لبرّا. النت بس للتحديثات.</p></details>
-      <details class="reveal"><summary>بتبطّئ البريمير؟</summary><p>الإفكت بيشتغل على كرت الشاشة، وأسرع شي على كروت NVIDIA. على الأجهزة الضعيفة فيك تخفف جودة المعاينة متل أي إفكت تاني.</p></details>
-      <details class="reveal"><summary>بيطلع الريتاتش بالتصدير؟</summary><p>إي، هو إفكت حقيقي على الكليب، فبيطلع بالتصدير متل ما شفته بالمعاينة بالضبط.</p></details>
-      <details class="reveal"><summary>فيني ركّبها على أكتر من جهاز؟</summary><p>كل مفتاح بيشتغل على جهاز واحد. إذا غيّرت جهازك أو بدك جهاز تاني، راسلنا على واتساب.</p></details>
-      <details class="reveal"><summary>إذا صارت معي مشكلة؟</summary><p>جوّا اللوحة في زر «💬 بلّغ عن مشكلة». بيبعتلنا شو صار معك على واتساب، ومنصلحها بسرعة.</p></details>
+      <details class="rv"><summary>بتشتغل على بريمير تبعي؟</summary><p>إذا عندك Adobe Premiere Pro 2022 أو أحدث على ويندوز 10 أو 11، إي. نسخة الماك قريباً.</p></details>
+      <details class="rv"><summary>بدها نت لتشتغل؟</summary><p>لا. كل الشغل بيصير على جهازك، وما في ولا صورة من الفيديو بتطلع لبرّا. النت بس للتحديثات.</p></details>
+      <details class="rv"><summary>بتبطّئ البريمير؟</summary><p>الإفكت بيشتغل على كرت الشاشة، وأسرع شي على كروت NVIDIA. على الأجهزة الضعيفة فيك تخفف جودة المعاينة متل أي إفكت تاني.</p></details>
+      <details class="rv"><summary>بيطلع الريتاتش بالتصدير؟</summary><p>إي، هو إفكت حقيقي على الكليب، فبيطلع بالتصدير متل ما شفته بالمعاينة بالضبط.</p></details>
+      <details class="rv"><summary>فيني ركّبها على أكتر من جهاز؟</summary><p>كل مفتاح بيشتغل على جهاز واحد. إذا غيّرت جهازك أو بدك جهاز تاني، راسلنا على واتساب.</p></details>
+      <details class="rv"><summary>إذا صارت معي مشكلة؟</summary><p>جوّا اللوحة في زر «💬 بلّغ عن مشكلة». بيبعتلنا شو صار معك على واتساب، ومنصلحها بسرعة.</p></details>
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <div class="final reveal">
+    <div class="final rv">
       <h2><img class="ttl" src="img/t/final.png" width="435" height="71" alt="جاهز تخلّي شغلك يلمع؟"></h2>
       <p>ريتاتش احترافي لكل وجه، بكبسة وحدة، جوّا بريمير.</p>
-      <div class="cta"><a class="btn primary" data-buy href="#">اشتري الآن</a><a class="btn" data-dl href="https://github.com/manaralmlis5-blip/manaralmlis5-blip.github.io/releases/latest/download/RetouchBeauty-Setup.exe">تنزيل للويندوز</a></div>
+      <div class="cta"><a class="btn mint" data-buy href="#">اشتري الآن</a><a class="btn" data-dl="rb" href="#">تنزيل للويندوز</a></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ======================= SWIFT MOTION ======================= -->
+<main class="prod" id="p-sm" data-name="Swift Motion">
+<section class="hero">
+  <div class="wrap">
+    <div class="text">
+      <span class="tag rv"><i></i> إضافة لـ Adobe After Effects</span>
+      <h1 class="rv d1"><img class="ttl" src="img/t/smh1.png" width="576" height="192" alt="موشن احترافي بكبسة جوّا أفتر إفكتس"></h1>
+      <p class="lead rv d2">نصوص متحركة، زجاج ولوحات متوهّجة، كروت، انتقالات بلا قطع وحركات ساس… اختار الحركة، اكبس، وكل شي بيتعدّل لايف من اللوحة: الألوان، السرعة، الحجم والنص.</p>
+      <div class="cta rv d3">
+        <a class="btn mint" data-buy href="#"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg> بدي التفاصيل</a>
+        <a class="btn" data-dl="sm" href="#"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg> تنزيل للويندوز</a>
+      </div>
+      <div class="trust rv d4">
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg> كبسة وحدة</span>
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h7"/></svg> عربي وإنجليزي</span>
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 3v5h5M4 13a8 8 0 0 0 14.3 4.9L20 16M20 21v-5h-5"/></svg> تحديثات مجانية</span>
+      </div>
+    </div>
+    <div class="stack rv d2">
+      <div class="clip glass c1"><video src="img/sm/glowpanel.mp4" muted loop playsinline autoplay preload="metadata"></video></div>
+      <div class="clip glass c2"><video src="img/sm/glowcard.mp4" muted loop playsinline autoplay preload="metadata"></video></div>
+      <div class="clip glass c3"><video src="img/sm/orbit.mp4" muted loop playsinline autoplay preload="metadata"></video></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap stats">
+  <div class="stat glass rv"><div class="n" data-count="35" data-suffix="+">0</div><p>حركة وإفكت جاهز</p></div>
+  <div class="stat glass rv d1"><div class="n" data-count="7">0</div><p>أقسام: نصوص، زجاج، انتقالات…</p></div>
+  <div class="stat glass rv d2"><div class="n" data-count="1">0</div><p>كبسة، وبعدها كلو لايف</p></div>
+</div>
+<div class="marq"><div class="run"></div></div>
+
+<section id="sm-gallery">
+  <div class="wrap">
+    <div class="head rv"><small>مرّر الماوس فوق أي وحدة</small><h2><img class="ttl" src="img/t/smgal.png" width="316" height="71" alt="شوف شو بيعمل"></h2><p>كل هالحركات طالعة من البلجن نفسه، على نصّك وألوانك.</p></div>
+    <div class="gal" id="gal"></div>
+  </div>
+</section>
+
+<section id="sm-features">
+  <div class="wrap">
+    <div class="head rv"><small>كل شي بمكان واحد</small><h2><img class="ttl" src="img/t/smfeat.png" width="422" height="71" alt="كل الحركات بمكان واحد"></h2><p>لوحة وحدة جوّا أفتر إفكتس، كل نوع بقسمه، وكل حركة بمربّع بيورجيك ياها قبل ما تكبس.</p></div>
+    <div class="grid">
+      <div class="card rv"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 7V5h16v2M9 19h6M12 5v14"/></svg></div><h3>نصوص متحركة</h3><p>ضبابي، متوهّج، كروم، زجاج، ساس، جزيرة وتحديد آيفون… على نصّك انت، عربي أو إنجليزي.</p></div>
+      <div class="card rv d1"><div class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="4"/><path d="M3 10h18"/></svg></div><h3>زجاج ولوحات</h3><p>صناديق زجاجية، كروت مواقع، نقاط زجاج ولوحات متوهّجة، وحوّل أي شيب لزجاج بكبسة.</p></div>
+      <div class="card rv d2"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div><h3>انتقالات بلا قطع</h3><p>عنصر بيتحرك هو اللي بيقطع: صندوقين، شاشة عايمة، كرتين مقدّم وضيف، فيديو بكرت.</p></div>
+      <div class="card rv"><div class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16"/></svg></div><h3>أشكال وتدرّجات</h3><p>كرت متوهّج، نص حراري، تدرّج ملتف، دويرة، حبوب بتنط وكشف بكسل.</p></div>
+      <div class="card rv d1"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></div><h3>تعديل لايف</h3><p>كل سلايدر بيعدّل الطبقات نفسها بأفتر إفكتس، بلا ما يمسح ويعيد البناء، والنتيجة طبقة وحدة مرتّبة.</p></div>
+      <div class="card rv d2"><div class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></div><h3>أدوات بتوفّر وقت</h3><p>نسخ ولصق الإفكتات والحركة بين الطبقات، سنتر بكبسة، وكل نصوص الكومب بمكان واحد.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="sm-how">
+  <div class="wrap">
+    <div class="head rv"><small>سهلة كتير</small><h2><img class="ttl" src="img/t/smhow.png" width="458" height="71" alt="من التثبيت للحركة بدقايق"></h2></div>
+    <div class="steps">
+      <div class="step rv"><h3>نزّل وثبّت</h3><p>نزّل ملف التثبيت وشغّله، بيركّب البلجن بأفتر إفكتس لحالو.</p></div>
+      <div class="step rv d1"><h3>ابعتلنا رقم جهازك</h3><p>افتح Window ← Extensions ← Swift Motion، انسخ رقم الجهاز وابعتلنا ياه على واتساب.</p></div>
+      <div class="step rv d2"><h3>فعّل بالمفتاح</h3><p>بيوصلك مفتاح التفعيل، الصقه باللوحة واكبس «فعّل».</p></div>
+      <div class="step rv d3"><h3>اختار واكبس</h3><p>حدد النص أو الطبقة، اختار الحركة واكبس. عدّل من اللوحة على راحتك.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap two">
+    <div class="plat">
+      <div class="pc rv"><div class="os"><svg viewBox="0 0 24 24"><path d="M3 5.5l7.5-1v7H3zM11.5 4.3L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg></div><div><h3>ويندوز 10 و 11</h3><p>After Effects 2024 وأحدث</p></div><span class="st ok">متوفر</span></div>
+      <div class="pc rv d1"><div class="os"><svg viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.5 1.3-.1 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.5 1-1.4 1.3-2.7 1.4-2.8-.1 0-2.6-1-2.6-4.1zM13.9 4.9c.7-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z"/></svg></div><div><h3>ماك</h3><p>قريباً</p></div><span class="st soon">قريباً</span></div>
+    </div>
+    <div class="warn rv d1">
+      <div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M12 8v4M12 16h.01"/></svg></div>
+      <div>
+        <h3>وقت التثبيت</h3>
+        <p>إذا طلعت «Windows protected your PC» اكبس <b>More info</b> وبعدين <b>Run anyway</b>.</p>
+        <p class="muted">سكّر أفتر إفكتس قبل التثبيت، وبعده افتحه ورح لـ <code>Window › Extensions › Swift Motion</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sm-faq">
+  <div class="wrap">
+    <div class="head rv"><small>عندك سؤال؟</small><h2><img class="ttl" src="img/t/faq.png" width="245" height="71" alt="أسئلة متكررة"></h2></div>
+    <div class="faq">
+      <details class="rv"><summary>بيشتغل على أفتر إفكتس تبعي؟</summary><p>إذا عندك After Effects 2024 أو أحدث على ويندوز 10 أو 11، إي.</p></details>
+      <details class="rv"><summary>بعد ما اكبس، فيني عدّل؟</summary><p>إي، كل شي بيضل لايف: الألوان والسرعة والحجم والنص بيتعدّلوا من اللوحة على نفس الطبقات، بلا ما تعيد البناء.</p></details>
+      <details class="rv"><summary>بيدعم العربي؟</summary><p>إي، النصوص العربية من اليمين لليسار، والإنجليزي كمان.</p></details>
+      <details class="rv"><summary>فيني ركّبه على أكتر من جهاز؟</summary><p>كل مفتاح بيشتغل على جهاز واحد. إذا غيّرت جهازك أو بدك جهاز تاني، راسلنا على واتساب.</p></details>
+      <details class="rv"><summary>في تحديثات؟</summary><p>إي، وكلها مجانية. لما تنزل نسخة جديدة بيطلعلك إشعار جوّا اللوحة وبتنزّلها بكبسة.</p></details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final rv">
+      <h2><img class="ttl" src="img/t/smfinal.png" width="352" height="71" alt="جاهز تحرّك شغلك؟"></h2>
+      <p>راسلنا وبيوصلك كل تفاصيل Swift Motion.</p>
+      <div class="cta"><a class="btn mint" data-buy href="#">بدي التفاصيل</a><a class="btn" data-dl="sm" href="#">تنزيل للويندوز</a></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ======================= BOTH ======================= -->
+<section id="tools">
+  <div class="wrap">
+    <div class="head rv"><small>الأدوات</small><h2><img class="ttl" src="img/t/hub.png" width="462" height="108" alt="أدوات للمبدعين"></h2></div>
+    <div class="tools">
+      <button class="card tool rv" data-to="rb"><span class="lg"><svg class="i" viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7z"/></svg></span><span><h3>Retouch Beauty</h3><small>ريتاتش ومكياج لكل الوجوه · Premiere Pro</small></span><span class="go">←</span></button>
+      <button class="card tool rv d1" data-to="sm"><span class="lg"><svg class="i" viewBox="0 0 24 24"><path d="M5 18c4-1 6-4 7-8s3-6 7-6"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="4" r="2"/></svg></span><span><h3>Swift Motion</h3><small>موشن احترافي بكبسة · After Effects</small></span><span class="go">←</span></button>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <span class="brand" style="font-size:15px"><span class="logo" style="width:28px;height:28px;border-radius:9px"><svg viewBox="0 0 24 24" style="width:15px;height:15px"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7z"/></svg></span>Retouch Beauty</span>
-    <span>© <span id="yr"></span> Retouch Beauty · Adobe و Premiere Pro علامات تجارية لـ Adobe</span>
+    <span>Retouch Beauty · Swift Motion</span>
+    <span>© <span id="yr"></span> · Adobe و Premiere Pro و After Effects علامات تجارية لـ Adobe</span>
   </div>
 </footer>
 
@@ -358,58 +570,138 @@
   /* ---- the only things to edit ---- */
   var CONFIG = {
     whatsapp: '963952651066',        // your WhatsApp, country code, digits only
-    price: '$25',                    // shown on the price card
-    oldPrice: '$50',                 // struck through next to it (the price after the launch offer); '' = none
-    github: 'manaralmlis5-blip/manaralmlis5-blip.github.io'   // where the installer is published (tools\publish-update.ps1)
+    price: '$25',                    // Retouch Beauty price card
+    oldPrice: '$50',                 // struck through next to it; '' = none
+    rbRepo: 'manaralmlis5-blip/manaralmlis5-blip.github.io',   // Retouch Beauty installer releases
+    smRepo: 'manaralmlis5-blip/swift-motion'                    // Swift Motion installer releases (Motion Sahib\scripts\publish-update.ps1)
   };
   /* ---------------------------------- */
   (function () {
-    var buyText = 'مرحبا، بدي اشتري Retouch Beauty ✨';
-    var wa = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(buyText);
-    document.querySelectorAll('[data-buy]').forEach(function (a) {
-      if (a.getAttribute('href') === '#price') return;
-      a.href = wa; a.target = '_blank'; a.rel = 'noopener';
-    });
-    var dl = CONFIG.github ? 'https://github.com/' + CONFIG.github + '/releases/latest/download/RetouchBeauty-Setup.exe' : '#price';
-    document.querySelectorAll('[data-dl]').forEach(function (a) { a.href = dl; });
-    var p = CONFIG.price.match(/^(\D*)([\d.,]+)(.*)$/);
-    document.getElementById('priceAmt').innerHTML = (p ? '<small>' + p[1] + '</small>' + p[2] + '<small>' + p[3] + '</small>' : CONFIG.price) +
-      (CONFIG.oldPrice ? ' <s class="old">' + CONFIG.oldPrice + '</s><span class="off">-' + Math.round(100 - 100 * parseFloat(CONFIG.price.replace(/[^\d.]/g, '')) / parseFloat(CONFIG.oldPrice.replace(/[^\d.]/g, ''))) + '%</span>' : '');
-    if (CONFIG.oldPrice) document.getElementById('priceTag').textContent = '🔥 عرض الإطلاق، لفترة محدودة';
-    document.getElementById('yr').textContent = new Date().getFullYear();
+    var $ = function (id) { return document.getElementById(id); };
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var P = {
+      rb: { msg: 'مرحبا، بدي اشتري Retouch Beauty ✨', title: 'Retouch Beauty — ريتاتش ومكياج لكل الوجوه ببريمير',
+            links: [['rb-features', 'المميزات'], ['rb-looks', 'اللوكات'], ['rb-how', 'كيف بتشتغل'], ['rb-price', 'السعر'], ['rb-faq', 'أسئلة']],
+            marq: ['تنعيم البشرة', 'شيل الحبوب', 'الهالات', 'وجه V', 'تكبير العيون', 'أحمر شفايف', 'كونتور', '13 لوك', 'كل الوجوه'] },
+      sm: { msg: 'مرحبا، بدي تفاصيل Swift Motion 🎬', title: 'Swift Motion — موشن احترافي بكبسة جوّا أفتر إفكتس',
+            links: [['sm-gallery', 'الحركات'], ['sm-features', 'المميزات'], ['sm-how', 'كيف بتشتغل'], ['sm-faq', 'أسئلة']],
+            marq: ['نصوص متحركة', 'زجاج', 'لوحات متوهّجة', 'انتقالات بلا قطع', 'حركات ساس', 'كرت متوهّج', 'نص حراري', 'تحديد آيفون', 'تعديل لايف'] }
+    };
+    var cur = null;
 
+    // whatsapp + downloads
+    function wa(p) { return 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(P[p].msg); }
+    function setBuy(p) { document.querySelectorAll('[data-buy]').forEach(function (a) { a.href = wa(p); a.target = '_blank'; a.rel = 'noopener'; }); }
+    document.querySelectorAll('[data-dl]').forEach(function (a) {
+      var rb = a.getAttribute('data-dl') === 'rb';
+      a.href = 'https://github.com/' + (rb ? CONFIG.rbRepo : CONFIG.smRepo) + '/releases/latest/download/' + (rb ? 'RetouchBeauty-Setup.exe' : 'SwiftMotion-Setup.exe');
+    });
+    var pm = CONFIG.price.match(/^(\D*)([\d.,]+)(.*)$/);
+    $('priceAmt').innerHTML = (pm ? '<small>' + pm[1] + '</small>' + pm[2] + '<small>' + pm[3] + '</small>' : CONFIG.price) +
+      (CONFIG.oldPrice ? ' <s class="old">' + CONFIG.oldPrice + '</s><span class="off">-' + Math.round(100 - 100 * parseFloat(CONFIG.price.replace(/[^\d.]/g, '')) / parseFloat(CONFIG.oldPrice.replace(/[^\d.]/g, ''))) + '%</span>' : '');
+    if (CONFIG.oldPrice) $('priceTag').innerHTML = '<i></i> عرض الإطلاق، لفترة محدودة';
+    $('yr').textContent = new Date().getFullYear();
+
+    // looks
     var LOOKS = [['cleangirl','كلين قيرل'],['coquette','كوكيت'],['dollish','دمية'],['angel','ملاك'],['natural','طبيعي'],['sugarplum','وردي'],['hotgirl','دافي'],['romance','رومانسي'],['smoky','سموكي'],['fresh','منعش'],['idol','آيدول'],['latte','لاتيه'],['boyfriend','للشباب']];
-    document.getElementById('lookGrid').innerHTML = LOOKS.map(function (l) { return '<div class="lk"><img src="img/looks/' + l[0] + '.jpg" alt="لوك ' + l[1] + '" loading="lazy">' + l[1] + '</div>'; }).join('');
+    $('lookGrid').innerHTML = LOOKS.map(function (l) { return '<div class="lk"><img src="img/looks/' + l[0] + '.jpg" alt="لوك ' + l[1] + '" loading="lazy">' + l[1] + '</div>'; }).join('');
+
+    // Swift Motion gallery (hover / in view plays)
+    var GAL = [['product','💎 عرض منتجات',1],['orbit','🪐 دويرة'],['pills','🟤 حبوب بتنط'],['heat','🌡 نص حراري'],['glassdots','🔘 نقاط زجاج'],['cards','🎙 كرتين: مقدّم وضيف',1],['chrome','🪩 نص كروم'],['glowtext','🔥 نص متوهّج'],['glasstext','🔮 نص غلاس'],['jazira','🏝 نص جزيرة'],['inbox','💬 صندوق نص'],['twirl','🌀 تدرّج ملتف'],['cta','⌨ نصوص ساس'],['iphone','📱 تحديد آيفون']];
+    $('gal').innerHTML = GAL.map(function (g, i) { return '<div class="tile rv d' + (i % 4) + (g[2] ? ' big' : '') + '"><video src="img/sm/' + g[0] + '.mp4" muted loop playsinline preload="metadata"></video><span>' + g[1] + '</span></div>'; }).join('');
+    var touch = matchMedia('(hover: none)').matches;
+    document.querySelectorAll('.tile').forEach(function (t) {
+      var v = t.querySelector('video');
+      v.addEventListener('loadeddata', function () { if (v.paused) v.currentTime = Math.min(1, v.duration / 2 || 0); });
+      if (!touch) { t.addEventListener('mouseenter', function () { v.play().catch(function () {}); }); t.addEventListener('mouseleave', function () { v.pause(); }); }
+    });
+    if (touch && 'IntersectionObserver' in window) {
+      var vio = new IntersectionObserver(function (es) { es.forEach(function (e) { var v = e.target.querySelector('video'); if (e.isIntersecting) v.play().catch(function () {}); else v.pause(); }); }, { threshold: .6 });
+      document.querySelectorAll('.tile').forEach(function (t) { vio.observe(t); });
+    }
+
+    // pointer-following shine on buttons + cards
+    document.addEventListener('pointermove', function (e) {
+      var el = e.target.closest && e.target.closest('.btn, .card'); if (!el) return;
+      var r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (e.clientX - r.left) + 'px'); el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+
+    // island: the mint light glides under the hovered item, the dot sits under the product
+    var island = $('island'), glide = $('glide'), dot = $('dot');
+    function place(el, node, w) { var a = island.getBoundingClientRect(), r = el.getBoundingClientRect(); node.style.left = (r.left - a.left + (w ? 0 : r.width / 2 - 2)) + 'px'; if (w) node.style.width = r.width + 'px'; }
+    island.addEventListener('mouseover', function (e) {
+      var el = e.target.closest('#links a, .switch .tab, .island > .btn'); if (!el) return;
+      place(el, glide, true); glide.style.opacity = 1;
+    });
+    island.addEventListener('mouseleave', function () { glide.style.opacity = 0; });
+
+    // reveal on scroll
+    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: .12 }) : null;
+    function watch(root) { root.querySelectorAll('.rv:not(.in)').forEach(function (el) { if (io && !reduce) io.observe(el); else el.classList.add('in'); }); }
+
+    // numbers count up, each step ticks up out of a blur
+    var cio = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { count(e.target); cio.unobserve(e.target); } }); }, { threshold: .6 }) : null;
+    function count(el) {
+      var to = +el.getAttribute('data-count'), suf = el.getAttribute('data-suffix') || '', t0 = performance.now(), dur = 900 + to * 25, last = -1;
+      if (reduce) { el.textContent = to + suf; return; }
+      (function f(t) {
+        var k = Math.min(1, (t - t0) / dur), v = Math.round(to * (1 - Math.pow(1 - k, 3)));
+        if (v !== last) { last = v; el.textContent = v + (k >= 1 ? suf : ''); el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); }
+        if (k < 1) requestAnimationFrame(f); else el.textContent = to + suf;
+      })(t0);
+    }
+    function counters(root) { root.querySelectorAll('[data-count]').forEach(function (el) { el.textContent = '0'; if (cio) cio.observe(el); else count(el); }); }
+
+    // product switch (top, hash #rb / #sm, tool cards); old page blurs out, new one rises in
+    function show(p, scroll) {
+      if (p === cur || !P[p]) return;
+      var old = cur && $('p-' + cur), nu = $('p-' + p);
+      cur = p; document.body.setAttribute('data-p', p); document.title = P[p].title;
+      document.querySelectorAll('.switch .tab').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-to') === p); });
+      document.querySelectorAll('.tool').forEach(function (b) { b.classList.toggle('here', b.getAttribute('data-to') === p); });
+      var on = document.querySelector('.switch .tab.on'), pill = $('swPill'), s = $('switch').getBoundingClientRect(), r = on.getBoundingClientRect();
+      pill.style.left = (r.left - s.left) + 'px'; pill.style.width = r.width + 'px';
+      $('links').innerHTML = P[p].links.map(function (l) { return '<a href="#' + l[0] + '">' + l[1] + '</a>'; }).join('');
+      setBuy(p);
+      var mq = nu.querySelector('.marq .run'); if (mq && !mq.children.length) { var h = P[p].marq.map(function (w) { return '<span>' + w + '</span>'; }).join(''); mq.innerHTML = h + h; }
+      function enter() {
+        if (old) { old.classList.remove('out', 'on'); old.querySelectorAll('.rv').forEach(function (el) { el.classList.remove('in'); }); }
+        nu.classList.add('on'); watch(nu); counters(nu);
+        nu.querySelectorAll('.stack video').forEach(function (v) { v.play().catch(function () {}); });
+        if (old) old.querySelectorAll('video').forEach(function (v) { v.pause(); });
+        if (scroll) window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      }
+      if (old && !reduce) { old.classList.add('out'); setTimeout(enter, 300); } else enter();
+      if (location.hash !== '#' + p && !/^#(rb|sm)-/.test(location.hash)) history.replaceState(null, '', '#' + p);
+    }
+    document.addEventListener('click', function (e) { var b = e.target.closest('[data-to]'); if (b) { e.preventDefault(); show(b.getAttribute('data-to'), true); } });
+    window.addEventListener('resize', function () { var c = cur; cur = null; show(c); });
+    watch(document.getElementById('tools'));
+    var h = location.hash.replace('#', '').split('-')[0];
+    show(P[h] ? h : 'rb');
 
     // before / after slider
-    var ba = document.getElementById('ba'), before = ba.querySelector('.before'), bar = ba.querySelector('.bar'), knob = ba.querySelector('.knob'), drag = false;
+    var ba = $('ba'), before = ba.querySelector('.before'), bar = ba.querySelector('.bar'), knob = ba.querySelector('.knob'), drag = false, base = .5;
     function setF(f) { f = Math.max(0, Math.min(1, f)); before.style.clipPath = 'inset(0 ' + (100 - f * 100) + '% 0 0)'; bar.style.left = knob.style.left = f * 100 + '%'; }
     function set(x) { var r = ba.getBoundingClientRect(); setF((x - r.left) / r.width); }
-    var base = .5;
     ba.addEventListener('pointerdown', function (e) { drag = true; ba.setPointerCapture(e.pointerId); set(e.clientX); });
     ba.addEventListener('pointermove', function (e) { if (drag) set(e.clientX); });
     ba.addEventListener('pointerup', function () { drag = false; });
-    // pick a pair
     document.querySelectorAll('#baThumbs button').forEach(function (b) {
       b.onclick = function () {
         var n = b.getAttribute('data-n');
-        document.getElementById('baAfter').src = 'img/ba/' + n + '-after.jpg';
-        document.getElementById('baBefore').src = 'img/ba/' + n + '-before.jpg';
+        $('baAfter').src = 'img/ba/' + n + '-after.jpg'; $('baBefore').src = 'img/ba/' + n + '-before.jpg';
         document.querySelectorAll('#baThumbs button').forEach(function (x) { x.classList.toggle('on', x === b); });
         base = +(b.getAttribute('data-x') || .5); setF(base);
       };
     });
-    // a short hint: the line glides once when the section comes into view
     var hinted = false;
-    if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) new IntersectionObserver(function (es, o) {
+    if ('IntersectionObserver' in window && !reduce) new IntersectionObserver(function (es, o) {
       if (!es[0].isIntersecting || hinted) return; hinted = true; o.disconnect();
       var t0 = performance.now();
       (function step(t) { var k = Math.min(1, (t - t0) / 1600); setF(base + .25 * Math.sin(k * Math.PI * 2) * (1 - k)); if (k < 1 && !drag) requestAnimationFrame(step); })(t0);
     }, { threshold: .6 }).observe(ba);
-
-    // reveal on scroll
-    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: .12 }) : null;
-    document.querySelectorAll('.reveal').forEach(function (el) { if (io) io.observe(el); else el.classList.add('in'); });
   })();
 </script>
 </body>
