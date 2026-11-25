@@ -99,6 +99,9 @@
   .hero { padding: 140px 0 40px; min-height: 92svh; display: flex; align-items: center; }
   .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
   .tag { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 99px; border: 1px solid var(--line2); background: rgba(255,255,255,.03); color: var(--t75); font-size: 14px; }
+  /* the live version next to «إضافة لـ …» (2026-11-25): the newest GitHub release, filled by the script at the end */
+  .tag .ver { direction: ltr; unicode-bidi: isolate; font: 700 13px/1 ui-monospace, Consolas, monospace; color: #fff; padding: 3px 8px; border-radius: 99px; background: rgba(155,77,255,.22); border: 1px solid rgba(173,93,255,.45); }
+  .tag .ver:empty { display: none; }
   .tag i { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 0 rgba(155,77,255,0.85); animation: lamp 2.2s infinite; }
   @keyframes lamp { 50% { opacity: .55; box-shadow: 0 0 0 .45rem rgba(155,77,255,0); } 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(155,77,255,0.85); } }
   h1 { margin: 18px 0 12px; line-height: 0; }
@@ -351,7 +354,7 @@
 <section class="hero">
   <div class="wrap">
     <div class="text">
-      <span class="tag rv"><i></i> إضافة لـ Adobe Premiere Pro</span>
+      <span class="tag rv"><i></i> إضافة لـ Adobe Premiere Pro <b class="ver" data-repo="manaralmlis5-blip/manaralmlis5-blip.github.io"></b></span>
       <h1 class="rv d1"><img class="ttl" src="img/t/h1.png" width="624" height="192" alt="ريتاتش متل كاب كات جوّا بريمير، لكل الوجوه"></h1>
       <p class="lead rv d2">تنعيم بشرة، شيل حبوب وهالات، نحت وجه، ومكياج بلوكات جاهزة… على كل وجه بالفيديو، حتى لو كان جانبي. بكبسة وحدة، مباشرة على التايملاين، بلا تصدير ولا انتظار.</p>
       <div class="cta rv d3">
@@ -498,7 +501,7 @@
 <section class="hero">
   <div class="wrap">
     <div class="text">
-      <span class="tag rv"><i></i> إضافة لـ Adobe After Effects</span>
+      <span class="tag rv"><i></i> إضافة لـ Adobe After Effects <b class="ver" data-repo="manaralmlis5-blip/swift-motion"></b></span>
       <h1 class="rv d1"><img class="ttl" src="img/t/smh1.png" width="576" height="192" alt="موشن احترافي بكبسة جوّا أفتر إفكتس"></h1>
       <p class="lead rv d2">نصوص متحركة، زجاج ولوحات متوهّجة، كروت، انتقالات بلا قطع وحركات ساس… اختار الحركة، اكبس، وكل شي بيتعدّل لايف من اللوحة: الألوان، السرعة، الحجم والنص.</p>
       <div class="cta rv d3">
@@ -887,6 +890,20 @@
       (function step(t) { var k = Math.min(1, (t - t0) / 1600); setF(base + .25 * Math.sin(k * Math.PI * 2) * (1 - k)); if (k < 1 && !drag) requestAnimationFrame(step); })(t0);
     }, { threshold: .6 }).observe(ba);
   })();
+</script>
+<script>
+/* «إضافة لـ …  v1.0.13»: the newest release of each plugin, read live from GitHub (cached 10 min); nothing shows if it can't be read */
+(function () {
+  document.querySelectorAll('.tag .ver[data-repo]').forEach(function (el) {
+    var repo = el.getAttribute('data-repo'), key = 'ver:' + repo, c = null;
+    try { c = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
+    if (c && Date.now() - c.at < 600000) { el.textContent = c.v; return; }
+    fetch('https://api.github.com/repos/' + repo + '/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (j) { var v = 'v' + String(j.tag_name || '').replace(/^v/i, ''); if (v.length < 3) return; el.textContent = v; try { localStorage.setItem(key, JSON.stringify({ v: v, at: Date.now() })); } catch (e) {} })
+      .catch(function () { if (c) el.textContent = c.v; });
+  });
+})();
 </script>
 </body>
 </html>
