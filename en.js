@@ -111,6 +111,7 @@ window.SITE_EN = {
   'إذا كروم قال إن الملف': 'If Chrome says the file is', 'مو منتشر': 'not commonly downloaded', ': افتح التنزيلات (Ctrl+J) واكبس': ': open Downloads (Ctrl+J) and click',
   'Keep / الاحتفاظ': 'Keep', 'إذا ويندوز قال': 'If Windows says', ': اكبس': ': click', 'سكّر البرنامج (بريمير أو أفتر) قبل التثبيت.': 'Close the app (Premiere or After Effects) before installing.',
   'ما بلّش؟ نزّله من هون': 'Didn\'t start? Download it here', 'تمام': 'OK',
+  'إذا كروم كتب إنو الملف': 'If Chrome says the file is', 'مش شائع': 'not commonly downloaded', ': افتح التنزيلات': ': open Downloads', 'واكبس': 'and click', 'الاحتفاظ': 'Keep',
   // image alts
   'ريتاتش متل كاب كات جوّا بريمير، لكل الوجوه': 'Retouch like CapCut inside Premiere, for every face', 'لوحة Retouch Beauty جوّا بريمير برو': 'The Retouch Beauty panel inside Premiere Pro',
   'كل اللي بتعملو بكاب كات… صار ببريمير': 'Everything you do in CapCut… now in Premiere', 'قبل وبعد، بكبسة وحدة': 'Before and after, one click',
