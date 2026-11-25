@@ -261,7 +261,23 @@
   .dlm p { margin: 0 0 14px; color: var(--t55); font-size: 14.5px; }
   .dlm ol { text-align: start; margin: 0 0 18px; padding-inline-start: 20px; color: var(--t75); font-size: 14px; }
   .dlm ol b { color: #fff; }
-  .dlm .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }  @media (prefers-reduced-motion: reduce) {
+  .dlm .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  /* «مكتبتك الخاصة» (Swift Motion «📚 مكتبتي», 2026-11-25): 3 steps, each a real panel screenshot */
+  .lib { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: s; }
+  .libc { min-width: 0; position: relative; display: flex; flex-direction: column; gap: 14px; padding: 18px 18px 22px; border-radius: 26px; background: var(--s1); border: 1px solid var(--line); overflow: hidden; transition: border-color .3s, translate .4s var(--ease); }
+  .libc:hover { border-color: rgba(126,242,185,.35); translate: 0 -3px; }
+  .libc .shot { position: relative; border-radius: 18px; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,.08); aspect-ratio: 4 / 5; box-shadow: 0 24px 60px -30px rgba(126,242,185,.45); }
+  .libc .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .libc .shot.fit { display: grid; place-items: center; background: radial-gradient(70% 60% at 50% 40%, rgba(126,242,185,.12), transparent 70%), #050806; }
+  .libc .shot.fit img { height: auto; object-fit: contain; }
+  .libc h3 { margin: 0; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  .libc h3::before { counter-increment: s; content: '0' counter(s); flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #03150c; background: linear-gradient(180deg, #a6ffd2, #7EF2B9 55%, #5fe0a2); }
+  .libc p { margin: 0; color: var(--t55); font-size: 14.5px; }
+  .libnote { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin-top: 22px; color: var(--t55); font-size: 14px; }
+  .libnote span::before { content: '✓'; color: var(--mint); margin-inline-end: 6px; font-weight: 700; }
+  @media (max-width: 900px) { .lib { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .lib { grid-template-columns: minmax(0, 1fr); } }
+  @media (prefers-reduced-motion: reduce) {
     .rv { opacity: 1; filter: none; translate: none; transition: none; }
     .float, .stack .clip, .marq .run, .tag i { animation: none; }
     main.prod.on, main.prod.out { animation: none; }
@@ -269,7 +285,7 @@
   @media (max-width: 980px) { .island .links { display: none; } .island .sep { display: none; } }
   @media (max-width: 900px) {
     .hero { padding-top: 120px; min-height: 0; }
-    .hero .wrap { grid-template-columns: 1fr; gap: 56px; }
+    .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 56px; }   /* minmax: the h1 image made phones scroll sideways */
     .hero .text { text-align: center; } .lead { margin-inline: auto; } .cta, .trust { justify-content: center; }
     h1 img.ttl { margin-inline-start: 0; }
     .grid { grid-template-columns: 1fr 1fr; }
@@ -513,6 +529,21 @@
   </div>
 </section>
 
+<section id="sm-lib">
+  <div class="wrap">
+    <div class="head rv"><small>جديد · مكتبتي</small><h2><img class="ttl" src="img/t/smlib.png" width="418" height="71" alt="مكتبتك الخاصة، بكبسة"></h2><p>أي شغل عملته وعجبك، احفظه كقالب بمكتبتك، رتّبه بفولدر لكل عميل أو مشروع، ورجّعه لأي بروجكت جديد بكبسة.</p></div>
+    <div class="lib">
+      <div class="libc rv"><div class="shot fit"><img src="img/smlib/save.jpg" alt="نافذة حفظ الكومب كقالب: الاسم والفولدر" width="560" height="480" loading="lazy"></div>
+        <h3>احفظ الكومب كقالب</h3><p>افتح الكومب واكبس الزر الأخضر، اختار اسم وفولدر. حددت طبقات منه؟ بينحفظوا لحالهم كقالب.</p></div>
+      <div class="libc rv d1"><div class="shot"><img src="img/smlib/folders.jpg" alt="مكتبتي: فولدرات لكل عميل ومشروع" width="560" height="880" loading="lazy"></div>
+        <h3>رتّبها بفولدرات</h3><p>فولدر لكل عميل أو مشروع، مع صور القوالب جوّاه. نجمة للمفضلة، وبحث بكل قوالبك.</p></div>
+      <div class="libc rv d2"><div class="shot"><img src="img/smlib/folder.jpg" alt="قوالب الفولدر، كبسة وحدة بتحطه بالتايملاين" width="560" height="707" loading="lazy"></div>
+        <h3>كبسة وبيرجع للتايملاين</h3><p>كبسة على القالب بتحطه بالكومب المفتوح عند مؤشر الوقت، بكل طبقاته وملفاته.</p></div>
+    </div>
+    <div class="libnote rv"><span>الكومب وكل اللي جوّاه بس</span><span>صورة لكل قالب تلقائياً</span><span>مكتبتك على جهازك، بأي فولدر بتختاره</span></div>
+  </div>
+</section>
+
 <section id="sm-how">
   <div class="wrap">
     <div class="head rv"><small>سهلة كتير</small><h2><img class="ttl" src="img/t/smhow.png" width="458" height="71" alt="من التثبيت للحركة بدقايق"></h2></div>
@@ -632,8 +663,8 @@
             links: [['rb-features', 'المميزات'], ['rb-looks', 'اللوكات'], ['rb-how', 'كيف بتشتغل'], ['rb-price', 'السعر'], ['rb-faq', 'أسئلة']],
             marq: ['تنعيم البشرة', 'شيل الحبوب', 'الهالات', 'وجه V', 'تكبير العيون', 'أحمر شفايف', 'كونتور', '13 لوك', 'كل الوجوه'] },
       sm: { msg: 'مرحبا، بدي تفاصيل Swift Motion 🎬', title: 'Swift Motion — موشن احترافي بكبسة جوّا أفتر إفكتس',
-            links: [['sm-gallery', 'الحركات'], ['sm-features', 'المميزات'], ['sm-how', 'كيف بتشتغل'], ['sm-price', 'السعر'], ['sm-faq', 'أسئلة']],
-            marq: ['نصوص متحركة', 'زجاج', 'لوحات متوهّجة', 'انتقالات بلا قطع', 'حركات ساس', 'كرت متوهّج', 'نص حراري', 'تحديد آيفون', 'تعديل لايف'] }
+            links: [['sm-gallery', 'الحركات'], ['sm-features', 'المميزات'], ['sm-lib', 'مكتبتي'], ['sm-how', 'كيف بتشتغل'], ['sm-price', 'السعر'], ['sm-faq', 'أسئلة']],
+            marq: ['نصوص متحركة', 'مكتبتك الخاصة', 'زجاج', 'لوحات متوهّجة', 'انتقالات بلا قطع', 'حركات ساس', 'كرت متوهّج', 'نص حراري', 'تحديد آيفون', 'تعديل لايف'] }
     };
     var cur = null;
 
@@ -689,17 +720,16 @@
       document.querySelectorAll('.tile').forEach(function (t) { vio.observe(t); });
     }
 
-    // download: start at once + show the sheet (a silent / blocked download looked like «nothing happens»)
+    // download: the link's OWN click downloads (top-level, user gesture) + the sheet shows. NO hidden iframe: Chrome silently
+    // blocks downloads started in a cross-site iframe without user activation (2026-11-25: «ما عم تنزل على الكروم»).
+    // GitHub answers with Content-Disposition: attachment, so the page stays where it is.
     var dlm = $('dlm');
     document.addEventListener('click', function (e) {
       var a = e.target.closest('[data-dl]'); if (!a) return;
-      e.preventDefault();
       var url = a.href, rb = a.getAttribute('data-dl') === 'rb';
       $('dlName').textContent = (rb ? 'RetouchBeauty-Setup.exe' : 'SwiftMotion-Setup.exe') + ' بينزل هلق بمجلد التنزيلات (Downloads).';
       $('dlAgain').href = url;
-      dlm.classList.add('on');
-      var f = document.createElement('iframe'); f.style.display = 'none'; f.src = url; document.body.appendChild(f);
-      setTimeout(function () { f.remove(); }, 60000);
+      setTimeout(function () { dlm.classList.add('on'); }, 150);
     });
     $('dlClose').onclick = function () { dlm.classList.remove('on'); };
     dlm.addEventListener('click', function (e) { if (e.target === dlm) dlm.classList.remove('on'); });    // pointer-following shine on buttons + cards
